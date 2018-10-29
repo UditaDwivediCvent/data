@@ -48,8 +48,8 @@
                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                     <block text-align="right" text-decoration="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'line-through', '')}">
                                         <!-- rm modified on 6.13.17 --> 
-                                        <apex:outputText value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
-                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                             <apex:param value="{!ROUND(wrapper.rackRate, 2)}"/>
                                         </apex:outputText>
                                     </block>
@@ -95,6 +95,7 @@
                     </apex:repeat>
                     <!-- footer -->
                     <table-row border="1px white solid" background-color="rgb(221, 222, 225)">
+                        
                         <table-cell display-align="center" padding-top="{!IF(eventTable.linesSavings>0,'3', '0')}" padding-bottom="{!IF(eventTable.linesSavings>0,'3', '0')}" padding-left="3" padding-right="3" width="540px" number-columns-spanned="5">
                             <block text-align="right" font-weight="normal" color="red">
                                 <apex:outputText rendered="{!IF(eventTable.linesSavings>0 && quote.Show_Savings__c,'true', 'false')}" value="Total{!IF(eventTable.years == 1, ' annual', '')} savings of " />
@@ -165,16 +166,16 @@
                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                     <block text-align="right" text-decoration="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'line-through', '')}">
                                         <!-- rm modified on 6.13.17 --> 
-                                        <apex:outputText value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
-                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                             <apex:param value="{!ROUND(wrapper.rackRate, 2)}"/>
                                         </apex:outputText>
                                     </block>
                                 </table-cell>                                
                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                     <block text-align="right" >
-                                         <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'true', 'false')}" value="{!IF(ROUND(wrapper.discountUnitRate, 2) == ROUND(wrapper.rackRate, 2), '',IF(ROUND(wrapper.discountUnitRate, 2) <> NULL, currencySign, ''))}"></apex:outputText>
-                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'true', 'false')}" value="{0, number,###,###,##0.00}" >
+                                         <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), NOT(boo_BlockPricing), 'false')}" value="{!IF(ROUND(wrapper.discountUnitRate, 2) == ROUND(wrapper.rackRate, 2), '',IF(ROUND(wrapper.discountUnitRate, 2) <> NULL, currencySign, ''))}"></apex:outputText>
+                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), NOT(boo_BlockPricing), 'false')}" value="{0, number,###,###,##0.00}" >
                                             <apex:param value="{!ROUND(wrapper.discountUnitRate, 2)}"/>
                                             <apex:param value="{!IF(ROUND(wrapper.discountUnitRate, 2) == ROUND(wrapper.rackRate, 2), '', ROUND(wrapper.discountUnitRate, 2))}"/>
                                         </apex:outputText>
@@ -1242,8 +1243,8 @@
                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                     <block text-align="right" text-decoration="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'line-through', '')}">
                                         <!-- rm modified on 6.13.17 --> 
-                                        <apex:outputText value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
-                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                        <apex:outputText rendered="{! !boo_BlockPricing}"  value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                             <apex:param value="{!ROUND(wrapper.rackRate, 2)}"/>
                                         </apex:outputText>
                                     </block>
@@ -1345,16 +1346,16 @@
                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                     <block text-align="right" text-decoration="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'line-through', '')}">
                                         <!-- rm modified on 6.13.17 --> 
-                                        <apex:outputText value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
-                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                             <apex:param value="{!ROUND(wrapper.rackRate, 2)}"/>
                                         </apex:outputText>
                                     </block>
                                 </table-cell>
                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                     <block text-align="right">
-                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'true', 'false')}" value="{!IF(ROUND(wrapper.discountUnitRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
-                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'true', 'false')}" value="{0, number,###,###,##0.00}" >
+                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), NOT(boo_BlockPricing), 'false')}" value="{!IF(ROUND(wrapper.discountUnitRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
+                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), NOT(boo_BlockPricing), 'false')}" value="{0, number,###,###,##0.00}" >
                                             <apex:param value="{!ROUND(wrapper.discountUnitRate, 2)}"/>
                                         </apex:outputText>
                                     </block>
@@ -1456,8 +1457,8 @@
                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                     <block text-align="right" text-decoration="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'line-through', '')}">
                                         <!-- rm modified on 6.13.17 --> 
-                                        <apex:outputText value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
-                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                             <apex:param value="{!ROUND(wrapper.rackRate, 2)}"/>
                                         </apex:outputText>
                                     </block>
@@ -1590,16 +1591,16 @@
                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                     <block text-align="right" text-decoration="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'line-through', '')}">
                                         <!-- rm modified on 6.13.17 --> 
-                                        <apex:outputText value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
-                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(ROUND(wrapper.rackRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
+                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                             <apex:param value="{!ROUND(wrapper.rackRate, 2)}"/>
                                         </apex:outputText>
                                     </block>
                                 </table-cell>
                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                     <block text-align="right">
-                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'true', 'false')}" value="{!IF(ROUND(wrapper.discountUnitRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
-                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), 'true', 'false')}" value="{0, number,###,###,##0.00}" >
+                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), NOT(boo_BlockPricing), 'false')}" value="{!IF(ROUND(wrapper.discountUnitRate, 2) <> NULL, currencySign, '')}"></apex:outputText>
+                                        <apex:outputText rendered="{!IF(ROUND(wrapper.discountUnitRate, 2) != ROUND(wrapper.rackRate, 2), NOT(boo_BlockPricing), 'false')}" value="{0, number,###,###,##0.00}" >
                                             <apex:param value="{!ROUND(wrapper.discountUnitRate, 2)}"/>
                                         </apex:outputText>
                                     </block>
@@ -1765,8 +1766,8 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
@@ -1863,16 +1864,16 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right">
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{0, number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{0, number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.discountUnitRate}"/>
                                                         </apex:outputText>
                                                     </block>
@@ -1970,8 +1971,8 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
@@ -2069,16 +2070,16 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right">
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{0, number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{0, number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.discountUnitRate}"/>
                                                         </apex:outputText>
                                                     </block>
@@ -2176,8 +2177,8 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
@@ -2275,16 +2276,16 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right">
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{0, number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{0, number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.discountUnitRate}"/>
                                                         </apex:outputText>
                                                     </block>
@@ -2382,8 +2383,8 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
@@ -2481,16 +2482,16 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right">
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{0, number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{0, number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.discountUnitRate}"/>
                                                         </apex:outputText>
                                                     </block>
@@ -2588,8 +2589,8 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
@@ -2687,16 +2688,16 @@
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right" text-decoration="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'line-through', '')}">
-                                                        <apex:outputText value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText value="{0,number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{!IF(wrapper2.rackRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{! !boo_BlockPricing}" value="{0,number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.rackRate}"/>
                                                         </apex:outputText>
                                                     </block>
                                                 </table-cell>
                                                 <table-cell display-align="center" padding-top="3" padding-bottom="3" padding-left="3" padding-right="3" width="75px" border="1px white solid">
                                                     <block text-align="right">
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
-                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, 'true', 'false')}" value="{0, number,###,###,##0.00}" >
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{!IF(wrapper2.discountUnitRate <> NULL, currencySign, '')}"></apex:outputText>
+                                                        <apex:outputText rendered="{!IF(wrapper2.discountUnitRate != wrapper2.rackRate, NOT(boo_BlockPricing), 'false')}" value="{0, number,###,###,##0.00}" >
                                                             <apex:param value="{!wrapper2.discountUnitRate}"/>
                                                         </apex:outputText>
                                                     </block>

@@ -507,8 +507,20 @@ private class CommunitysearchResultClsTest{
             /*Is_it_Pime__c = True;
             Data__c = 'Test Data';*/
             
+             Community_Country_ISD_Codes__c cc = new Community_Country_ISD_Codes__c();
+            cc.Country_Name__c   = 'United States';
+            cc.Name = 'USA';
+            cc.ISD_Code__c = '1';
+            insert cc;
+            
             system.debug('Network.getNetworkId()++++'+Network.getNetworkId());
             CommunityHomePageCls instOfCHPGC = new CommunityHomePageCls();
+            
+            instOfCHPGC.selectedname = 'USA';
+            instOfCHPGC.phoneNumber = '09716549377';
+            instOfCHPGC.selectedLanguage = 'English';
+        
+        
             instOfCHPGC.searchTerm = 'Test';
             instOfCHPGC.search = 'Test';
             instOfCHPGC.selectedMovie = 'Test';
@@ -516,6 +528,7 @@ private class CommunitysearchResultClsTest{
             instOfCHPGC.counter = 0;
             //instOfCHPGC.Lang = 'de';
             instOfCHPGC.search();
+            instOfCHPGC.requestCall();
             CommunityHomePageCls.updateAnnouncement();
         }
     }

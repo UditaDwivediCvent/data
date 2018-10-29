@@ -55,7 +55,7 @@ global class CommunityHomePageCls{
       User userInfoRec = [SELECT Id,ContactId,Contact.Account.Service_Tier__c FROM User WHERE Id =: userId];
       map<string,Community_Country_ISD_Codes__c> codes = Community_Country_ISD_Codes__c.getAll();           
       string countryCode = codes.get(selectedname).ISD_Code__c;
-      
+      system.debug('---countryCode'+countryCode);
       PhoneNo = phoneNumber.startsWith('0') ? countryCode+phoneNumber.substring(1):countryCode+phoneNumber;
       PhoneNo = '011'+PhoneNo;
       String callcenterURL;
@@ -84,8 +84,7 @@ global class CommunityHomePageCls{
         HttpRequest request = new HttpRequest();
         request.setEndpoint(callcenterURL);
         request.setMethod('GET');
-        HttpResponse response = http.send(request);
-        System.debug('response*********'+response);
+        if(!Test.isRunningTest()){HttpResponse response = http.send(request);System.debug('response*********'+response);}
         
         PageReference pageRef = new PageReference('/');
         pageRef.setRedirect(true);
@@ -96,7 +95,7 @@ global class CommunityHomePageCls{
     
     Public List<Selectoption> getCountryCode(){
         List<Selectoption> code = new List<selectoption>();
-        code.add(new selectoption('USA','United States'));
+        code.add(new selectoption('USA','United States and Canada'));
         for(Country_Phone_Codes__c c :[SELECT name,id,Country_Name__c,ISD_Code__c FROM Country_Phone_Codes__c ORDER BY Country_Name__c]){
           if(c.name!='USA')
               code.add(new selectoption(c.name,c.Country_Name__c));

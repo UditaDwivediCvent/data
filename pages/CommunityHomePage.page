@@ -726,11 +726,16 @@ a.btn-new:hover{ color: #FFFFFF !important; background: #07a3e8!important;}
                     });
                 </script>
             </div>
-            <div class="call-us-bar">
+            <!--<div class="call-us-bar">
                 <a href="{!callUsURL}" target="_blank"><img src="{!URLFOR($Resource.CommunityAssets2, '/assets/images/side-nav-call-us.png')}" /></a>
-            </div>
-            <div>
-                <button type="button" onclick="reload();" class="btn btn-info" data-toggle="modal" data-target="#myModal">Call</button>
+            </div>-->
+            <div class="call-us-bar">
+            <!--    <button type="button" onclick="reload();" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+                    <img src="{!URLFOR($Resource.CommunityAssets2, '/assets/images/side-nav-request-a-call.png')}" />
+                </button>-->
+                <a name="request-a-call" data-target="#myModal" data-toggle="modal" onclick="reload();">
+  <img src="/resource/1539784401000/CommunityAssets2/assets/images/side-nav-request-a-call.png"/>
+</a>
             </div>                        
         </div>
     </section>

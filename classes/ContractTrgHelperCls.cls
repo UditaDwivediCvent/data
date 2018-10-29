@@ -288,6 +288,8 @@ public class ContractTrgHelperCls {
 
                 contract.contractedAmendmentOpportunity__c = amendmentOpportunity.Id;
 
+                contract.Last_Amended_Opportunity_Contracted__c = System.now();
+
                 contract.contractedAmendmentQuote__c = amendmentOpportunity.SBQQ__PrimaryQuote__c;
 
                 contract.Multiple_Years_Commitment__c = amendmentOpportunity.SBQQ__PrimaryQuote__r.Multiple_Years_Commitment__c;

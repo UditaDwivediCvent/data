@@ -28,8 +28,37 @@ public class caseTrgHelperCls{
     Public Static Boolean byPassFcc=false; 
     Public Static Boolean isRunOnce1=false;
     
+    /*
+     * Added By: Mohsin
+     * Added On: 18th October 2018
+     * Description: This method fill 'Purchased License For' field on Case object while creating or updating on the basis of 'Purchased License For' field on Account object.
+	 */
+    public static void purchasedLicenseFill(List<Case> newValues)
+    {
+        Set<Id> accIds = new Set<Id>();
+        for(Case instanceOfCase : newValues)
+        {
+            if(instanceOfCase.AccountId != NULL)
+            {
+                accIds.add(instanceOfCase.AccountId);
+            }
+        }
+        if(Limits.getQueries() < 100)
+        {
+            Map<Id, Account> accountEntries = new Map<Id, Account>([select Id,Purchased_License__c from Account where id in :accIds]);
+            for (Case caseRec : newValues) 
+            {
+                if(accountEntries.containsKey(caseRec.AccountId))
+                {
+                    caseRec.Purchase__c = accountEntries.get(caseRec.AccountId).Purchased_License__c; 
+                }
+            }
+        }
+    }
+    
     public void  OnBeforeInsert(List<Case> newValues){
         
+         purchasedLicenseFill(newValues);	//Added By Mohsin
          ///code starts for email auto logging : udita   
         set<string> caseSubjectAccount = new set<string>();
         set<string> accManagerName = new set<string>();
@@ -329,7 +358,7 @@ if((c.InternalCRMFinanceApproval__c==true && (userIdVsUser.ContainsKey(c.created
     }
     
     public void OnBeforeUpdate(Map<Id,Case> oldMapValues,Map<Id,Case> newMapValues){ 
-        
+        purchasedLicenseFill(newMapValues.values());	//Added By Mohsin
         //GDPR code starts this overrides the fields of cases when its marked gdpr : Udita - 5/17/2018
         case caseOld;
         For(case caseObj : newMapValues.values())

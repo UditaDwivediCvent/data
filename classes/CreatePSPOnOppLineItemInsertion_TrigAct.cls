@@ -38,6 +38,8 @@ public without sharing class CreatePSPOnOppLineItemInsertion_TrigAct extends Tri
     public Map<Id,Map<Integer,Professional_Services_Project__c>> accIdToPSPsMap;
     public Map<String,Integer> productNameToEBCountMap;
     public Map<String,Id> productNameToOppLineItemId;
+    public Set<String> validAutomationProductSet;
+    public Map<Id,Boolean> flexAutomationProcessFlagMap;
     public final String oweaId = Label.EB_Project_Org_Wide_Address_Id;
     public final static Id eventBuilderLeadersQueueId = Label.Event_Builder_Leaders_Queue_Id;
     
@@ -55,7 +57,9 @@ public without sharing class CreatePSPOnOppLineItemInsertion_TrigAct extends Tri
         EBSBToBeInsertedList = new List<EB_SB_Builder__c>();
         EBToUpdateList = new List<EB_SB_Builder__c>();
         accIdToARAFlagMap = new Map<Id,Boolean>();
-        accIdToOpptsMap = new Map<Id,List<Opportunity>>();    
+        validAutomationProductSet = new Set<String>{'Event Builder','Flex Event Conversion Service (Eventbuilder)'};
+        accIdToOpptsMap = new Map<Id,List<Opportunity>>();   
+        flexAutomationProcessFlagMap = new Map<Id,Boolean>();
         oppIdToOppLineItemsMap = new Map<Id,List<OpportunityLineItem>>();
         prodNameToProdMappingMap = new Map<String,EB_Project_Products_Mapping__c>();
         accIdToPSPsMap = new Map<Id,Map<Integer,Professional_Services_Project__c>>(); 
@@ -78,28 +82,30 @@ public without sharing class CreatePSPOnOppLineItemInsertion_TrigAct extends Tri
                 Opportunity oldOpp = (Opportunity)this.triggerOldMap.get(newOpp.Id);
                 if(!newOpp.EBSB_Automation_Triggered_Dev__c && newOpp.StageName == 'Closed Won' && oldOpp.Contract_Implemented__c != newOpp.Contract_Implemented__c && newOpp.Contract_Implemented__c != null && newOpp.Contract_Implemented__c){
                     oppIdsToProcess.add(newOpp.Id);
-                }               
+                    flexAutomationProcessFlagMap.put(newOpp.Id, false);
+                }
+                // Added below code for Flex Conversion Automation                
+                if(newOpp.StageName == 'Closed Won – Do Not Send to EBS' && oldOpp.StageName != 'Closed Won – Do Not Send to EBS'){
+                    oppIdsToProcess.add(newOpp.Id);
+                    flexAutomationProcessFlagMap.put(newOpp.Id, true);
+                }
             } 
             
             List<OpportunityLineItem> oppLineItemList;
-            for(OpportunityLineItem newItem : [Select Id, Product2.Name,Quantity,OpportunityId from OpportunityLineItem where OpportunityId IN :oppIdsToProcess]){
-                if(newItem.Product2.Name.contains('Event Builder') && newItem.Product2.Name != 'Event Builder Package' && newItem.Quantity != null){
-                    // Stores the Product Name to OpportunityLineItem Id.
-                    productNameToOppLineItemId.put(newItem.Product2.Name, newItem.Id);
-                    // Stores the prod name and project count.
-                    productNameToEBCountMap.put(newItem.Product2.Name,Integer.ValueOf(newItem.Quantity));                        
-                    //Instantiate List
-                    oppLineItemList = new List<OpportunityLineItem>();                    
-                    // Prepare Opportunity Id to List of Opp Line Items.
-                    if(oppIdToOppLineItemsMap.containsKey(newItem.OpportunityId)){
-                        oppLineItemList = oppIdToOppLineItemsMap.get(newItem.OpportunityId);
-                        oppLineItemList.add(newItem);
-                        oppIdToOppLineItemsMap.put(newItem.OpportunityId,oppLineItemList);
-                    }else{
-                        oppLineItemList.add(newItem);
-                        oppIdToOppLineItemsMap.put(newItem.OpportunityId,oppLineItemList);
-                    }
-                }
+            for(OpportunityLineItem newItem : [Select Id, Product2.Name,Quantity,OpportunityId,Opportunity.StageName from OpportunityLineItem where OpportunityId IN :oppIdsToProcess]){
+                if(validAutomationProductSet.contains(newItem.Product2.Name) && newItem.Product2.Name != 'Event Builder Package' && newItem.Quantity != null){
+                       // Stores the Product Name to OpportunityLineItem Id.
+                       productNameToOppLineItemId.put(newItem.Product2.Name, newItem.Id);
+                       // Stores the prod name and project count.
+                       productNameToEBCountMap.put(newItem.Product2.Name,Integer.ValueOf(newItem.Quantity));  
+                       
+                       // Prepare Opportunity Id to List of Opp Line Items.
+                       if(oppIdToOppLineItemsMap.containsKey(newItem.OpportunityId)){
+                           oppIdToOppLineItemsMap.get(newItem.OpportunityId).add(newItem);
+                       }else{
+                           oppIdToOppLineItemsMap.put(newItem.OpportunityId,new List<OpportunityLineItem>{newItem});
+                       }
+                   }
             }
         }
         return !productNameToEBCountMap.isEmpty();       
@@ -273,6 +279,8 @@ public without sharing class CreatePSPOnOppLineItemInsertion_TrigAct extends Tri
     Boolean sendScopeEmail = false;
     Boolean expressEmailSent = false;
     Boolean scopeEmailSent = false;
+    Boolean sendFlexConversionEmail = false;
+    Boolean flexConversionEmailSent = false;
     Integer sendScopeEmailLimit = 0;
     Integer sendExpressEmailLimit = 0;        
     
@@ -281,6 +289,8 @@ public without sharing class CreatePSPOnOppLineItemInsertion_TrigAct extends Tri
             if(ebproject.Project_Type_del__c != 'Enterprise Project' && ebproject.Project_Type_del__c != 'Event Quarterback Project'){
                 if(ebproject.Project_Type_del__c == 'Event Builder - Express'){
                     sendExpressEmail = true;                
+                }else if(ebproject.Project_Type_del__c == 'Flex Conversion'){
+                    sendFlexConversionEmail = true;
                 }else{
                     sendScopeEmail = true;                
                 }               
@@ -290,6 +300,9 @@ public without sharing class CreatePSPOnOppLineItemInsertion_TrigAct extends Tri
                 }else if(sendScopeEmail && !scopeEmailSent){
                     EBSurveyNotificationEmail.sendCustomEmail(ebproject.Id);
                     scopeEmailSent = true;
+                }else if(sendFlexConversionEmail && !flexConversionEmailSent){
+                    EBSurveyNotificationEmail.sendCustomEmail(ebproject.Id);
+                    flexConversionEmailSent = true;
                 }    
             }            
         }     

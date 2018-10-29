@@ -2,9 +2,9 @@
   <apex:form > 
   <apex:outputPanel rendered="{!IF((conList[0].DateTime_TeamMember__c == null || (Today() - conList[0].DateTime_TeamMember__c > 180)) , true, false)}"> 
   <apex:outputPanel rendered="{!conRoleList.size < 1}">
-     <h2 style="font-size:15px;color:brown;"> There is no Contact Role created for this contact.Click on YES if you wish to create buyer role for this contact.</h2><br/><br/>
-       <apex:commandButton immediate="true" oncomplete="abc();" value="Yes" style="margin-right: 31px;font-size: 15px;"/>
-       <apex:commandButton action="{!callNo}" value="No"  oncomplete="window.top.location.reload()"  style="font-size: 15px;"/>
+     <h2 style="font-size:13px;color:brown;"> There is no Buyer Role record created for this contact. Reminder: We will ask you this only once every 6 months for this contact. </h2><br/><br/>
+       <apex:commandButton immediate="true" oncomplete="abc();" value="Yes" style="margin-right: 31px;font-size: 11px;"/>
+       <apex:commandButton action="{!callNo}" value="No"  oncomplete="window.top.location.reload()"  style="font-size: 11px;"/>
     </apex:outputPanel>  
   </apex:outputPanel> 
   </apex:form>

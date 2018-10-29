@@ -981,7 +981,8 @@ system.debug(strDateIso);
         //Onsite solutions object record creation
         List<Alliance_OA_Projects__c> lstAllOP = new List<Alliance_OA_Projects__c>();
         //Onsite solutions object record creation
-        
+         // Reassign opp
+         List<Opportunity> listSrcOpportunity=new List<Opportunity>();  
         for(Opportunity idForOppNew : newMapValues.values()){
             System.debug('idForOppNew**********'+idForOppNew.Contract_Implemented__c);
             Boolean instOfCh = CheckRecursive.runOnce();
@@ -998,7 +999,10 @@ system.debug(strDateIso);
                         lstBundleCampId.add(oldMapValues.get(idForOppNew.Id).MSA_Code__c);  
                     }
                 }
-
+                //Add by kumud [To avoid recursion and run when Reassign opportunity field change]
+                if(newMapValues.get(idForOppNew.Id).Reassigned_To__c != oldMapValues.get(idForOppNew.Id).Reassigned_To__c){
+                        listSrcOpportunity.add(idForOppNew);
+                }//end 
                 if((idForOppNew.CFC_Check__c != null && idForOppNew.CFC_Check__c !='' && oldMapValues.get(idForOppNew.Id).CFC_Check__c != idForOppNew.CFC_Check__c) || (idForOppNew.Send_This_To_Tract__c != oldMapValues.get(idForOppNew.Id).Send_This_To_Tract__c )){ // (idForOppNew.Re_Reviewed_by__c !=null && idForOppNew.Re_Reviewed_by__c!= '' && oldMapValues.get(idForOppNew.Id).Re_Reviewed_by__c != idForOppNew.Re_Reviewed_by__c)|| [Removed by kumud: field cleanup activity]
                     
                     //Updating contracts record on any opp. 
@@ -1239,6 +1243,13 @@ system.debug(strDateIso);
         //Method for Checking for Security Review of an Opportunity to share those with Sales Engineers using sharing Rule on Account (If checked)
         if(CheckRecursive.runOnceSeventh())
         SalesEngineerAccessToOpportunity(newMapValues.values(),oldMapValues);
+        
+         // Reassign oppty method call- Add by kumud : 30 sept 2018      
+        if(!listSrcOpportunity.isEmpty()){
+                    
+            QuoteLineCloneforMYD instQT=new QuoteLineCloneforMYD();
+            instQT.checkVariablestype(listSrcOpportunity);
+        }// end
     }
     public void OnBeforeDelete(List<Opportunity> oldValues,Map<Id,Opportunity> oldMapValues){
         

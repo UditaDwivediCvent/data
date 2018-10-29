@@ -12,6 +12,7 @@ global without sharing class EBSurveyNotificationEmail {
     public final String emailTemplateForDuplicateSurveyId = Label.EB_Project_Duplicate_Link_Usage_Notification_Id;
     public static final String emailTemplateExpressId = Label.EB_Project_Express_Request_Template_ID;
     public static final String emailTemplateScopeId = Label.EB_Project_Scope_Request_Template_ID;
+    public static final String emailTemplateFlexConversionID = Label.EB_Project_Flex_Conversion_Template_ID;
     public static final String emailTemplateForScopeRequestSurveySubmission = Label.EB_Project_Scope_Request_Created_ID;
     public static final String emailTemplateForRushRequestSurveySubmission = Label.EB_Project_Rush_Request_Created_Id;    
     public static final String emailTemplateForEBSBProjectOwnerChangeEmail = Label.EB_SB_Project_Owner_Change_Email_Notification;
@@ -21,6 +22,7 @@ global without sharing class EBSurveyNotificationEmail {
         // Get an EmailTemplate that would be used for sending emails.
         Id emailTemplateIdExpress = Id.valueOf(emailTemplateExpressId);
         Id emailTemplateIdScope = Id.valueOf(emailTemplateScopeId);
+        Id emailTemplateIdFlexConversion = Id.valueOf(emailTemplateFlexConversionID);
         
         // New instance of a single email message List
         mailList = new List<Messaging.SingleEmailMessage>(); 
@@ -34,6 +36,9 @@ global without sharing class EBSurveyNotificationEmail {
             if(ebproject.Project_Type_del__c == 'Event Builder - Express'){
                 // The email template ID used for the email Express event requests.
                 mail.setTemplateId(emailTemplateIdExpress);
+            }else if(ebproject.Project_Type_del__c == 'Flex Conversion'){
+                // The email template ID used for the email Express event requests.
+                mail.setTemplateId(emailTemplateIdFlexConversion);
             }else{
                 // The email template ID used for the email scope event requests.
                 mail.setTemplateId(emailTemplateIdScope);

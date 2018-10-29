@@ -54,7 +54,7 @@ global without sharing class CventMyd_AutoRenewContractSchedulable implements Sc
 
         queryString += ' AND Renewal_Creation_Date__c <=: todaysDate';
 
-        queryString += ' ORDER BY Renewal_Creation_Date__c ASC NULLS LAST, CreatedBy.Name ASC LIMIT 2';
+        queryString += ' ORDER BY LastModifiedDate DESC NULLS LAST, CreatedBy.Name ASC LIMIT 2';
         
         List<Contract> contractsTmp = Database.query(queryString);
 

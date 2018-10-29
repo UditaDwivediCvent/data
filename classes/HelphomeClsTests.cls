@@ -25,9 +25,18 @@ public class HelphomeClsTests {
             annObj.Is_Active__c = TRUE;
             insert annObj;
             
+            Community_Country_ISD_Codes__c cc = new Community_Country_ISD_Codes__c();
+            cc.Country_Name__c   = 'United States';
+            cc.Name = 'USA';
+            cc.ISD_Code__c = '1';
+            insert cc;
             
         HelphomeCls thecontroller = new HelphomeCls();
+        thecontroller.selectedname = 'USA';
+        thecontroller.phoneNumber = '09716549377';
+        thecontroller.selectedLanguage = 'English';
         thecontroller.search();
+        thecontroller.requestCall();
         //String nextPage = controller.save().getUrl();
 
         // Verify that page fails without parameters

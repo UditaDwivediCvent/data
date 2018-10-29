@@ -29,31 +29,54 @@ public class OpportunityTriggerDispatcher{
     Desc: Call from opportunity on before insert event.
     
     */
-    public void onBeforeInsert(List<Opportunity> newListOpportunities){
+
+    public static void flagGhostAmendmentOpportunities() {
+
+        /*
+
+            below block of code sets a flag on ghost amendment opportunities
+
+            these ghost opps are created when an existing amendment opp is used to amend a child contract
+
+            when the "Amend this contract" link is clicked, an API call creates a temporary amendment opportunity
+
+            this opportunity is discarded afterwards, so it should be ignored from validation
+
+        */
+
+        System.debug('flagGhostAmendmentOpportunities: ');
+
+        System.debug('Trigger.isInsert: ' + Trigger.isInsert);
+
+        System.debug('Trigger.isBefore: ' + Trigger.isBefore);
     
-        if(Trigger.new != null) {
+        if(Trigger.isInsert && Trigger.isBefore && !CventMyd_ContractAmendmentController.contractIdsBeingAmended.isEmpty()) {
 
             List<Opportunity> opportunities = (List<Opportunity>)Trigger.new;
 
             System.debug('contractIdsBeingAmended: ' + CventMyd_ContractAmendmentController.contractIdsBeingAmended);
 
-            if(!CventMyd_ContractAmendmentController.contractIdsBeingAmended.isEmpty()) {
+            for(Opportunity opportunity : opportunities) {
 
-                for(Opportunity opportunity : opportunities) {
+                Boolean amendmentOpportunityWasCreatedByUser = CventMyd_QuoteTriggerHandler.amendedContractIdToAmendmentOpportunityId.values().contains(opportunity.Id);
 
-                    System.debug('opportunity.Name: ' + opportunity.Name);
+                if(CventMyd_QuoteTriggerHandler.amendedContractIdToAmendmentOpportunityId.containsKey(opportunity.SBQQ__AmendedContract__c) && !amendmentOpportunityWasCreatedByUser) {
+
+                    System.debug('this is a ghost opportunity....');
+
+                    System.debug('opportunity.Name: ' + opportunity.Name);                    
 
                     opportunity.ignoreValidation__c = true;
-
-                    System.debug('validation rule notes debug: ' + opportunity.Notes__c);
-
-                    System.debug('opportunity.RecordTypeId: ' + opportunity.RecordTypeId);
 
                 }
 
             }
 
         }   
+
+    }
+
+    public void onBeforeInsert(List<Opportunity> newListOpportunities){
         
         //CPQ
         handler.onInsert_DefaultFieldsForCPQ_RenewalMYD(newListOpportunities);

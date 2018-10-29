@@ -41,14 +41,14 @@ public class OppotunityHelperClsUtil {
                     sObj.put(strFName,instOfOpp.get(strFName));
                 }
             }
-            sObj.put('Cloned_From_Opp_Id__c',String.valueOf(instOfOpp.Id));
-            sObj.put('Tract_Billing_Account_Number__c','');
+            //sObj.put('Cloned_From_Opp_Id__c',String.valueOf(instOfOpp.Id));
+            //sObj.put('Tract_Billing_Account_Number__c','');
             sObj.put('Contract_Implemented__c',false);
             sObj.put('Contract_Implemented_by__c','');
-            if(Test.isRunningTest())
+            /*if(Test.isRunningTest())
             sObj.put('Clubbed_Tract_Billing_Account__c','Wdecr12');
             else
-            sObj.put('Clubbed_Tract_Billing_Account__c','');
+            sObj.put('Clubbed_Tract_Billing_Account__c','');*/
             sobj.put('StageName','TRACT Clone');
             //sobj.put('TRACT2__Tract_Sales_Order__c','');
             sobjLstInsert.add(sObj);
@@ -89,10 +89,10 @@ public class OppotunityHelperClsUtil {
         for(sObject instOfSobj : sobjLstInsert){
             
             for(sObject instOfObjFeature : oppFeatureList){
-                system.debug(instOfSobj.get('Cloned_From_Opp_Id__c'));
                 system.debug(instOfObjFeature.get('OpportunityId'));
                 system.debug(instOfObjFeature.get('Id'));
-                if(instOfSobj.get('Cloned_From_Opp_Id__c') == instOfObjFeature.get('OpportunityId')){
+                //As "Cloned_From_Opp_Id__c" field is being purged so commenting this IF Clause
+                /*if(instOfSobj.get('Cloned_From_Opp_Id__c') == instOfObjFeature.get('OpportunityId')){
                     sObject sObj = Schema.getGlobalDescribe().get('OpportunityLineItem').newSObject() ;
                     system.debug(instOfSobj.get('Id'));
                     sObj.put('OpportunityId',instOfSobj.get('Id'));
@@ -103,7 +103,7 @@ public class OppotunityHelperClsUtil {
                         sObj.put(strFName,instOfObjFeature.get(strFName));
                     }
                     sobjLstInsertFeature.add(sObj);
-                }
+                }*/
             }
         }
         
@@ -146,10 +146,10 @@ public class OppotunityHelperClsUtil {
         for(sObject instOfSobj : sobjLstInsert){
             
             for(sObject instOfObjInvoice : oppInvoiceList){
-                system.debug(instOfSobj.get('Cloned_From_Opp_Id__c'));
                 system.debug(instOfObjInvoice.get('Opportunity__c'));
                 system.debug(instOfObjInvoice.get('Id'));
                 setIdsInvoiceDets.add(string.valueOf(instOfObjInvoice.get('id')));
+                /*Because "Cloned_From_Opp_Id__c" is purged so commenting this IF Clause
                 if(instOfSobj.get('Cloned_From_Opp_Id__c') == instOfObjInvoice.get('Opportunity__c')){
                     sObject sObj = Schema.getGlobalDescribe().get('Invoicing_Details__c').newSObject() ;
                     system.debug(instOfSobj.get('Id'));
@@ -162,7 +162,7 @@ public class OppotunityHelperClsUtil {
                     }
                     sObj.put('Invoicing_Details_Old_Id__c',instOfObjInvoice.get('Id'));
                     sobjLstInsertInvoiceDets.add(sObj);
-                }
+                }*/
             }
         }
         

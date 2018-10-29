@@ -70,7 +70,7 @@ public without sharing class GDPRController{
             
             //All fields are mandotory
             if(c.Submitter_Name__c==null || c.Submitter_Email__c==null || fName==null || lName==null || c.Requester_s_Email__c==null || c.GDPR_Type__c==null 
-            || c.GDPR_Submitted_Date__c==null || c.Products_Affected_Dev__c==null ||  showDescription==null || (showDescription=='Yes' && c.Description==null) || agree==null ){
+            || c.GDPR_Submitted_Date__c==null || c.Products_Affected_Dev__c==null ||  showDescription==null || (showDescription=='Yes' && c.Description==null) || agree==null || c.Data_Subject__c == NULL){
                 
                 ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.ERROR,'Please fill all the details.');
                 ApexPages.addMessage(myMsg);
@@ -122,7 +122,7 @@ public without sharing class GDPRController{
                     commentList.add(comment1);
                 
                 }
-                
+                                
                 if(commentList.size()>0)
                     insert commentList;
                 
@@ -133,7 +133,7 @@ public without sharing class GDPRController{
                     return null;
                 */
                 
-                /****** Enhancements : Udita - to create task for each product selected ******/
+                 /****** Enhancements : Udita - to create task for each product selected ******/
                 map<string,list<GDPRTaskSubProcessor__c>> gdprTaskMap= new map<string,list<GDPRTaskSubProcessor__c>>();
                 for(GDPRTaskSubProcessor__c objTask : [select Assigned_To__c,Product__c,Subject__c from GDPRTaskSubProcessor__c]){
                  if(!gdprTaskMap.containsKey(objTask.Product__c)){
@@ -145,31 +145,40 @@ public without sharing class GDPRController{
                 list<string> productsSelectedList = new list<string>();
                 productsSelectedList = c.Products_Affected_Dev__c.split(';');
                 system.debug('----productsSelectedList'+productsSelectedList);
-                List<case> caseList= new List<case>();
+                List<Task> TaskList= new List<Task>();
+                map<string,task> taskSubjectMap = new map<string,task>();// not to repeat the task having same subject lines 
                 for(string prod : productsSelectedList){
                   system.debug('----gdprTaskMap.containskey(prod)'+gdprTaskMap.containskey(prod));
                   if(gdprTaskMap.containskey(prod)){
                     system.debug('----gdprTaskMap.get(prod)'+gdprTaskMap.get(prod));
                     for(GDPRTaskSubProcessor__c gdprSubProcess : gdprTaskMap.get(prod)){
-                      case cObj = new case();
-                      cObj.Description= gdprSubProcess.Subject__c;
-                      cObj.OwnerId = gdprSubProcess.Assigned_To__c;
-                      cObj.ParentId = c.id;
-                      cObj.Subject = 'GDPR';
-                      caseList.add(cObj);
+                      if(!taskSubjectMap.containsKey(gdprSubProcess.Subject__c)){
+                          Task tObj = new Task();
+                          tObj.Status = 'Not Started';
+                          tObj.Description= gdprSubProcess.Subject__c;
+                          tObj.OwnerId = gdprSubProcess.Assigned_To__c;
+                          tObj.WhatId = c.id;
+                          tObj.Subject = gdprSubProcess.Subject__c;
+                          tObj.Priority = 'High'; 
+                          tObj.ActivityDate = system.today();
+                          TaskList.add(tObj);
+                          taskSubjectMap.put(gdprSubProcess.Subject__c,tObj);
+                      }
                     }  
                   }             
                 }
-                system.debug('----taskList'+caseList);
-                if(caseList.size() > 0){
-                 insert caseList;
+                system.debug('----taskList'+TaskList);
+                if(TaskList.size() > 0){
+                 insert TaskList;
                 } 
+                /**** Udita - code ends****/
                 
                 //Redirect to thank you page
                 //return new PageReference('http://www.cvent.com/uk/gdpr/cvents-affiliates-and-subprocessors-reject-thank-you.shtml');
                 return new PageReference(Label.GDPRSubmitThankYou);
                 
             }else{
+            
                 ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.INFO,'Please confirm the checkbox');
                 ApexPages.addMessage(myMsg);
                 return null;

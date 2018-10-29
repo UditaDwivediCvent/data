@@ -72,6 +72,16 @@ public class AMValidationControllerTest {
             aController.noOfRecords = 10;
             aController.ValidateAll();
             aController.pageNumber = 1;
+            
+            PageReference pgRef1 = Page.validateBuyerRole;
+            pgRef1.getParameters().put('id',con.id);
+            Test.setCurrentPageReference(pgRef1);
+            
+            ApexPages.StandardController stdCtrl1 = new ApexPages.StandardController(con);
+            validateBuyerRoleOnContact obj = new validateBuyerRoleOnContact(stdCtrl1);
+            obj.validateContact();
+            obj.callNo();
+            obj.editBuyerRole();
         }
     }
 }

@@ -31,7 +31,7 @@
                 window.open(url , '_self');
             }
             function openAppSupportToolBox(){
-                var url = 'https://appsupport.cvent.net';//{!caseObj.RecordTypeId}
+                var url = 'https://goo.gl/TVVdhc';//{!caseObj.RecordTypeId}
                 window.open(url , '_blank');
             }
         </script>
@@ -41,12 +41,12 @@
         <body>
             <div class="container">
                 <center><h1 style="margin-top: 3%;">App Support Escalation</h1></center>
-                <p style="font-size: 15.1px;margin-top: 3%;">Have you reviewed App Support Tool Box. You can run customized reports and take different account, event level actions without escalating to App Support.</p>
+                <p style="font-size: 15.1px;margin-top: 3%;">Have you reviewed App Support Tool Box? You can run customized reports and take different account, event level actions without escalating to App Support.</p>
                 <p style="font-size: 15.1px;"> Click on the button below to access App Support Tool Box.</p>
                 
                 <center style="margin-top: 3%;"><button type="button" class="btn btn-primary" onClick="openAppSupportToolBox();">App Support Tool Box</button></center>
                 <h3 style="margin-top: 3%;">Escalation Guidelines</h3>
-                <p style="font-size: 15.1px;">Please select the Topic to review the guidelines. <b>NOTE: Please copy the guidelines and paste into the description box on the bext page.</b></p>
+                <p style="font-size: 15.1px;">Please select the Topic to review the guidelines. <b>NOTE: Please copy the guidelines and paste into the description box on the next page.</b></p>
                 <form class="form-inline" >
                     <div class="form-group" style="margin-top: 2%;">
                         <label for="escalatedTopics" style="padding-right: 2%;">Escalated Topics:</label>

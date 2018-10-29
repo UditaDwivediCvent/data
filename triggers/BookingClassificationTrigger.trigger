@@ -4,8 +4,8 @@ trigger BookingClassificationTrigger on Booking_Classification__c (after insert,
         }
         else if(trigger.isAfter){
             //For ByPassing Opportunity Trigger...
-            //Constants.IsOpportunityTriggerActive = FALSE;
-            system.debug('Test insert');
+            Constants.IsOpportunityTriggerActive = FALSE;
+            system.debug('Test insert0');
             BookingClassificationHandler.onAfterInsert(trigger.newMap);
         }
     }
@@ -15,6 +15,7 @@ trigger BookingClassificationTrigger on Booking_Classification__c (after insert,
         else if(trigger.isAfter){
             //For ByPassing Opportunity Trigger...
             Constants.IsOpportunityTriggerActive = FALSE;
+            system.debug('Test insert1');
             BookingClassificationHandler.onAfterUpdate(trigger.oldMap,trigger.newMap);
         }
     }
@@ -25,6 +26,7 @@ trigger BookingClassificationTrigger on Booking_Classification__c (after insert,
         else if(trigger.isAfter){
             //For ByPassing Opportunity Trigger...
             Constants.IsOpportunityTriggerActive = FALSE;
+            system.debug('Test insert2');
             BookingClassificationHandler.onAfterDelete(trigger.oldMap);
         }
     }

@@ -47,13 +47,6 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
-                              .required{
-    border-left: 2px solid red;
-    position: absolute;
-    padding-top: 29px;
-    margin-top: 26px;
-}             
 </style>
 <style>
 #spinner{
@@ -237,7 +230,13 @@ p {
   margin: 0 auto;
   }
 }
-
+.requiredBlock {
+  background-color: #c00;
+  position: absolute;
+  width: 3px;
+  border-radius: 4px 0 0px 4px !important;
+  height: 10.7%;
+}
 </style>
 <style>
 .v-align{
@@ -286,11 +285,11 @@ p {
                             </div>
                         </div>
                         <form>
-                            <div class="form-group">  
-                                <div class="required"></div> 
+                            <div class="form-group">                
                                 <label for="type">Product</label>
-                                <select class="form-control productType" name="type" title="Product Type">
-                                    <option value="None">--None--</option>
+                                <select class="form-control" id="type" name="type" title="Product Type">
+                                    <!--<option value="None">--None--</option>-->
+                                    <option value="Event__c">Event Management</option>
                                     <option value="Abstract_Managements__c">Abstract Management</option>
                                     <option value="Appointment__c">Appointments</option>
                                     <option value="CrowdCompass__c">CrowdCompass</option>
@@ -305,12 +304,13 @@ p {
                                 </select>
                             </div>
                             <div class="form-group">
-                                <div class="required"></div> 
                                 <label for="name">Concise Description</label>
-                                <input class="form-control" placeholder="Describe your issue in as few words as possible." id="subjectId" maxlength="80" name="name" size="20" type="text" />
+                                <div class="requiredBlock"></div>
+                                <input class="form-control" placeholder="Describe your issue in as few words as possible." id="subjectId" maxlength="80" name="name" size="20" type="text"/>
+                                <div class="errorDiv" style="color:#a94442;"></div>
                             </div>
 
-                            <button type="button" ng-click="requiredValidation()" class="button button-blue">Continue</button>
+                            <button type="button" ng-click="letsset()" class="button button-blue">Continue</button>
                         </form>
                     </div><!-- .card-body -->
                 </div><!-- .card -->
@@ -387,95 +387,53 @@ p {
 <!--....................Ends Here.......................-->
 
 <script>
-    
     function myfunc(){
     }
     function highlightAgain(){
     }
     var app = angular.module('myApp', ['ui.bootstrap', 'ngResource']);
     app.controller('customersCtrl', function($scope,$window) {
-        $scope.requiredValidation=function(){
-            var productType = $('[name=type]').val() ;
-            var searchText = document.getElementById('subjectId').value;
-            if(productType == 'None')
-            {
-                alert('Please select a Product');
-            }
-            else if(searchText == '')
-            {
-                alert('Please fill some description');
-            }
-            else{
-                            var trackId = '{!$CurrentPage.parameters.id}';
-            console.log('***'+trackId);
-            //var productType = document.getElementById('type').value;
-            
-            showSpinner();
-            FindHelp_Class.actfast(trackId,productType,searchText,function(result,event){
-                if (event.status){
-                    $scope.names=JSON.parse(result);
-                    $scope.currentPage = 1; 
-                    $scope.totalItems = $scope.names.length;
-                    $scope.numPerPage = 20;
-                    $scope.paginate = function (value){ 
-                        var begin, end, index; 
-                        begin = ($scope.currentPage - 1) * $scope.numPerPage; 
-                        end = begin + $scope.numPerPage; 
-                        index = $scope.names.indexOf(value); 
-                        return (begin <= index && index < end); 
-                    };
-                    $scope.$apply();
-                    hideSpinner();
-                    jQuery("#articleDivId").show();
-                    jQuery("#articleDivHeadingId").show();
-
-                    jQuery("#createCasePanelId").hide();
-                    jQuery("#headId").show();
-                    jQuery("#createCaseButtonId").show();
-
-
-                }
-                else{
-                    console.log(event.message);
-                }
-            }, {escape:false});
-            }
-        }
         $scope.names;
         $scope.letsset=function(){
             var trackId = '{!$CurrentPage.parameters.id}';
             console.log('***'+trackId);
             var productType = document.getElementById('type').value;
             var searchText = document.getElementById('subjectId').value;
-            showSpinner();
-            FindHelp_Class.actfast(trackId,productType,searchText,function(result,event){
-                if (event.status){
-                    $scope.names=JSON.parse(result);
-                    $scope.currentPage = 1; 
-                    $scope.totalItems = $scope.names.length;
-                    $scope.numPerPage = 20;
-                    $scope.paginate = function (value){ 
-                        var begin, end, index; 
-                        begin = ($scope.currentPage - 1) * $scope.numPerPage; 
-                        end = begin + $scope.numPerPage; 
-                        index = $scope.names.indexOf(value); 
-                        return (begin <= index && index < end); 
-                    };
-                    $scope.$apply();
-                    hideSpinner();
-                    jQuery("#articleDivId").show();
-                    jQuery("#articleDivHeadingId").show();
-
-                    jQuery("#createCasePanelId").hide();
-                    jQuery("#headId").show();
-                    jQuery("#createCaseButtonId").show();
-
-
-                }
-                else{
-                    console.log(event.message);
-                }
-            }, {escape:false});
+            
+            if(searchText == ''){
+                $('.errorDiv').text('Please fill the subject');
+            }
+            else{
+                showSpinner();
+                FindHelp_Class.actfast(trackId,productType,searchText,function(result,event){
+                    if (event.status){
+                        $scope.names=JSON.parse(result);
+                        $scope.currentPage = 1; 
+                        $scope.totalItems = $scope.names.length;
+                        $scope.numPerPage = 20;
+                        $scope.paginate = function (value){ 
+                            var begin, end, index; 
+                            begin = ($scope.currentPage - 1) * $scope.numPerPage; 
+                            end = begin + $scope.numPerPage; 
+                            index = $scope.names.indexOf(value); 
+                            return (begin <= index && index < end); 
+                        };
+                        $scope.$apply();
+                        hideSpinner();
+                        jQuery("#articleDivId").show();
+                        jQuery("#articleDivHeadingId").show();
+    
+                        jQuery("#createCasePanelId").hide();
+                        jQuery("#headId").show();
+                        jQuery("#createCaseButtonId").show();
+    
+    
+                    }
+                    else{
+                        console.log(event.message);
+                    }
+                }, {escape:false});
+            }
         }
     });
 </script>

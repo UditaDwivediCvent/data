@@ -15,20 +15,36 @@
     border: 0px solid #ccc;
     border-radius: 4px;
     }
-    </style>
-     <script type="text/javascript">
-        function confirm() {
-          alert('Are you sure you want to validate Contact?');
-        }
-     </script> 
+    </style>     
   <apex:form styleClass="form" id="frm">
-   <div class='form-group'>
-   <apex:outputText rendered ="{!if(currentRecordConRole.size > 0,true,false)}" value=" The Contact Role for this customer is not validated in last 1 year. Please click below to Validate the Contact Buyer Role." styleClass="form-control">  </apex:outputText>
-  <!-- <apex:commandLink rendered ="{!if(currentRecordConRole.size > 0,true,false)}" value="Validate Buyer Role" onclick="confirm()" reRender="frm" action="{!validateContact}" style="margin-left: 262px;color: red;"></apex:commandLink>-->
-  <apex:outputLink rendered ="{!if(currentRecordConRole.size > 0,true,false)}" value="{!URLFOR($Action.Contact_Role__c.Edit, currentRecordConRole[0].id, ['retURL'='/home/home.jsp'])}" target="_blank" style="margin-left: 262px;color: red;"> 
-                      Validate Buyer Role
- </apex:outputLink>
+  <apex:pageMessages id="msgs"></apex:pageMessages>
+  <apex:outputPanel rendered="{!IF(currentRecordConRole.size > 0, true, false)}"> 
+  <!-- <apex:outputText value=" A Buyer Role record for this contact needs to be validated. Please choose one of the options below to validate the Buyer Role. Reminder: Buyer Roles must be validated every 365 days/1 year." styleClass="form-control">  </apex:outputText>-->
+  <h2 style="font-size:13px;color:brown;"> <b>Buyer Role record(s) for this contact need to be validated. Please choose one of the options below to validate the Buyer Role(s). Reminder: Buyer Roles must be validated every 365 days/1 year.</b> </h2><br/>
+  <!--<apex:outputLink value="{!URLFOR($Action.Contact_Role__c.Edit, currentRecordConRole[0].id, ['retURL'='/home/home.jsp'])}" target="_blank" style="margin-left: 262px;" > 
+                     <b style="font-size:13px;text-decoration-line: underline;"> Edit and Validate Buyer Role</b>
+  </apex:outputLink>-->
+  <apex:commandLink action="{!editBuyerRole}" target="_blank" style="margin-left: 262px;" > 
+                     <b style="font-size:13px;text-decoration-line: underline;"> Edit and Validate Buyer Role(s) </b>
+  </apex:commandLink>
+  <b><apex:commandLink value="Validate Buyer Role(s) As Is"   reRender="frm" action="{!validateContact}" style="margin-left: 76px;font-size:13px;text-decoration-line: underline;"></apex:commandLink></b>
+  </apex:outputPanel> 
+   
+  
+  
+  <apex:outputPanel rendered="{!IF((conList[0].DateTime_TeamMember__c == null || (Today() - conList[0].DateTime_TeamMember__c > 180)) , true, false)}"> 
+  <apex:outputPanel rendered="{!conRoleList.size < 1}">
+     <h2 style="font-size:13px;color:brown;"> <b>There is no Buyer Role record created for this contact. Do you want to create a Buyer Role record? Reminder: We will ask you this only once every 6 months for this contact.</b> </h2><br/>
+       <apex:commandButton immediate="true" oncomplete="abc();" value="Yes" style="margin-right: 31px;font-size: 13px;"/>
+       <apex:commandButton action="{!callNo}" value="No"  oncomplete="window.top.location.reload()"  style="font-size: 13px;"/>
+    </apex:outputPanel>  
+  </apex:outputPanel> 
+<script>
+function abc() {
+  window.open("/a09/e?CF00No000000Dxuos={!conList[0].Account.name}&CF00No000000Dxuos_lkid={!AccId}&retURL=%2F{!AccId}&RecordType=012o00000012XyW&ent=01I000000000GCO&CF00N000000071h6R={!conList[0].name}&CF00N000000071h6R_lkid={!conList[0].id}", "_blank");
+}
+</script>
 
-  </div>  
+
   </apex:form>
 </apex:page>

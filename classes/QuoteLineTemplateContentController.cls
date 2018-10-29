@@ -659,7 +659,12 @@ public class QuoteLineTemplateContentController {
             Boolean isAssociationStationOption = (isAssociationStation && isInBundle);
             Decimal int_Quantity = 0;
             //Project #  P-004348
-            if(ql.SBQQ__Product__r.Show_True_Quantity__c){int_Quantity = ql.SBQQ__Quantity__c; boo_BlockPricing = true;}else{int_Quantity = ql.SBQQ__EffectiveQuantity__c; boo_BlockPricing = false;}
+            if(ql.SBQQ__Product__r.Show_True_Quantity__c){
+                int_Quantity = ql.SBQQ__Quantity__c; 
+                boo_BlockPricing = true;
+                }else{
+                    int_Quantity = ql.SBQQ__EffectiveQuantity__c; 
+                    boo_BlockPricing = false;}
 
             if (!ql.SBQQ__Bundled__c && ql.SBQQ__ComponentVisibility__c != 'Never' && ql.SBQQ__ComponentVisibility__c != 'Editor Only' && !ql.SBQQ__Hidden__c && !isAssociationStationOption ) {
                 
@@ -798,32 +803,33 @@ public class QuoteLineTemplateContentController {
                             oa360SupportMulti.add(1, eventName, wrapper);
                             showOA360SupportTable = single;
                         }
-                        else if (ql.term__c ==2 && int_Quantity != NULL && contractTermYears > 1 && int_Quantity <> 0) {
+                        else if (ql.term__c ==2 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);}
                                 //wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);}
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);}
                             oa360SupportMulti.add(2, eventName, wrapper);
-                            
+                            System.debug('oa360SupportMulti : '+oa360SupportMulti);
                         }
-                        else if (ql.term__c ==3 && int_Quantity != NULL && contractTermYears > 2 && int_Quantity <> 0) {
+                        else if (ql.term__c ==3 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);}
                                 //wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);}
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);}
                             oa360SupportMulti.add(3, eventName, wrapper);
                         }
-                        else if (ql.term__c ==4 && int_Quantity != NULL && contractTermYears > 3 && int_Quantity <> 0) {
+                        else if (ql.term__c ==4 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);}
                                 //wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);}
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
                             }oa360SupportMulti.add(4, eventName, wrapper);
                         }
-                        else if (ql.term__c ==5 && int_Quantity != NULL && contractTermYears > 4 && int_Quantity <> 0) {
+                        else if (ql.term__c ==5 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);}
                                 //wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);}
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);}
                             oa360SupportMulti.add(5, eventName, wrapper);
                         }
                         showOA360SupportTable = single;
+                        System.debug('showOA360SupportTable : '+showOA360SupportTable);
                     }
                     
                     else if (ql.Contract_Output_Grouping__c == 'OA360 Equipment' && ql.SBQQ__EffectiveQuantity__c <> 0) {
@@ -839,7 +845,7 @@ public class QuoteLineTemplateContentController {
                             oa360EquipmentMulti.add(1, eventName, wrapper);
                             showOA360EquipmentTable = single;
                         }
-                        else if (ql.term__c ==2 && int_Quantity != NULL && contractTermYears > 1  && int_Quantity <> 0) {
+                        else if (ql.term__c ==2 && int_Quantity != NULL  && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             } 
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
@@ -847,7 +853,7 @@ public class QuoteLineTemplateContentController {
                             oa360EquipmentMulti.add(2, eventName, wrapper);
                             
                         }
-                        else if (ql.term__c ==3 && int_Quantity != NULL && contractTermYears > 2 && int_Quantity <> 0) {
+                        else if (ql.term__c ==3 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             } 
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
@@ -855,7 +861,7 @@ public class QuoteLineTemplateContentController {
                             oa360EquipmentMulti.add(3, eventName, wrapper);
                             
                         }
-                        else if (ql.term__c ==4 && int_Quantity != NULL && contractTermYears > 3 && int_Quantity <> 0) {
+                        else if (ql.term__c ==4 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             } 
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
@@ -863,7 +869,7 @@ public class QuoteLineTemplateContentController {
                             oa360EquipmentMulti.add(4, eventName, wrapper);
                             
                         }
-                        else if (ql.term__c ==5 && int_Quantity != NULL && contractTermYears > 4 && int_Quantity <> 0) {
+                        else if (ql.term__c ==5 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             } 
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
@@ -883,7 +889,7 @@ public class QuoteLineTemplateContentController {
                             oa360SuppliesMulti.add(1, eventName, wrapper);
                             showOA360Supplies = single;
                         }
-                        else if (ql.term__c ==2 && int_Quantity != NULL && contractTermYears > 1 && int_Quantity <> 0) {
+                        else if (ql.term__c ==2 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             }
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
@@ -891,7 +897,7 @@ public class QuoteLineTemplateContentController {
                             oa360SuppliesMulti.add(2, eventName, wrapper);
                             
                         }
-                        else if (ql.term__c ==3 && int_Quantity != NULL && contractTermYears > 2 && int_Quantity <> 0) {
+                        else if (ql.term__c ==3 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             } 
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
@@ -899,7 +905,7 @@ public class QuoteLineTemplateContentController {
                             oa360SuppliesMulti.add(3, eventName, wrapper);
                             
                         }
-                        else if (ql.term__c ==4 && int_Quantity != NULL && contractTermYears > 3 && int_Quantity <> 0) {
+                        else if (ql.term__c ==4 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             }
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
@@ -907,7 +913,7 @@ public class QuoteLineTemplateContentController {
                             oa360SuppliesMulti.add(4, eventName, wrapper);
                             
                         }
-                        else if (ql.term__c ==5 && int_Quantity != NULL && contractTermYears > 4 && int_Quantity <> 0) {
+                        else if (ql.term__c ==5 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             }
                             if (wrapper != null && ql != null) {wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
@@ -936,7 +942,8 @@ public class QuoteLineTemplateContentController {
                                 {
                                     wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                                 }
-                            } else {wrapper = aggregateOA360(ql, 1, quoteLines, eventName);if(wrapper.quantity == 0) { wrapper = NULL;}
+                            } else {wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);if(wrapper.quantity == 0) { wrapper = NULL;}
+                            //wrapper = aggregateOA360(ql, 1, quoteLines, eventName);if(wrapper.quantity == 0) { wrapper = NULL;}
                             }
 
                             if (wrapper != null && ql != null) {
@@ -957,7 +964,8 @@ public class QuoteLineTemplateContentController {
                                 }
                                 wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             } else {
-                                wrapper = aggregateOA360(ql, 2, quoteLines, eventName);
+                                wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
+                                //wrapper = aggregateOA360(ql, 2, quoteLines, eventName);
                                 if(wrapper.quantity == 0) {
                                     wrapper = NULL;
                                 }
@@ -976,7 +984,8 @@ public class QuoteLineTemplateContentController {
                                 }
                                 wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             } else {
-                                wrapper = aggregateOA360(ql, 3, quoteLines, eventName);
+                                wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
+                                //wrapper = aggregateOA360(ql, 3, quoteLines, eventName);
                                 if(wrapper.quantity == 0) {
                                     wrapper = NULL;
                                 }
@@ -996,7 +1005,8 @@ public class QuoteLineTemplateContentController {
                                 }
                                 wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
                             } else {
-                                wrapper = aggregateOA360(ql, 4, quoteLines, eventName);
+                                wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
+                                //wrapper = aggregateOA360(ql, 4, quoteLines, eventName);
                                 if(wrapper.quantity == 0) {
                                     wrapper = NULL;
                                 }
@@ -1016,7 +1026,8 @@ public class QuoteLineTemplateContentController {
                                 }
                                 wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);
                             } else {
-                                wrapper = aggregateOA360(ql, 5, quoteLines, eventName);
+                                wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);
+                                //wrapper = aggregateOA360(ql, 5, quoteLines, eventName);
                                 if(wrapper.quantity == 0) {
                                     wrapper = NULL;
                                 }
@@ -1043,7 +1054,7 @@ public class QuoteLineTemplateContentController {
                             oa360SWPlatformMulti.add(1, eventName, wrapper);
                             showOA360SoftwarePlatform = single;
                         }
-                        else if (ql.term__c ==2 && int_Quantity != NULL && contractTermYears > 1 && int_Quantity <> 0) {
+                        else if (ql.term__c ==2 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (int_Quantity != NULL && quote.Multiple_Years_Commitment__c) {
                                 //wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);
                                 wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
@@ -1055,7 +1066,7 @@ public class QuoteLineTemplateContentController {
                             }
                             oa360SWPlatformMulti.add(2, eventName, wrapper);
                         }
-                        else if (ql.term__c ==3 && int_Quantity != NULL && contractTermYears > 2 && int_Quantity <> 0) {
+                        else if (ql.term__c ==3 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (int_Quantity > 0 && quote.Multiple_Years_Commitment__c) {
                                 //wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);
                                 wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
@@ -1068,7 +1079,7 @@ public class QuoteLineTemplateContentController {
                                 wrapper.notes = TemplateUtilities.escapeNotesString(ql.Notes__c);
                             }
                         }
-                        else if (ql.term__c ==4 && int_Quantity != NULL && contractTermYears > 3 && int_Quantity <> 0) {
+                        else if (ql.term__c ==4 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c ) {
                                 //wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);
                                 wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
@@ -1080,7 +1091,7 @@ public class QuoteLineTemplateContentController {
                             }
                             oa360SWPlatformMulti.add(4, eventName, wrapper);
                         }
-                        else if (ql.term__c ==5 && int_Quantity != NULL && contractTermYears > 4 && int_Quantity <> 0) {
+                        else if (ql.term__c ==5 && int_Quantity != NULL && int_Quantity <> 0) {
                             if (quote.Multiple_Years_Commitment__c) {
                                 //wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * int_Quantity, ql.SBQQ__NetPrice__c / int_Quantity, ql.SBQQ__NetPrice__c);
                                 wrapper = new QLWrapper(ql.SBQQ__ProductName__c, int_Quantity, rackRate, rackRate * ql.SBQQ__Quantity__c, ql.SBQQ__NetPrice__c, ql.SBQQ__NetTotal__c);
@@ -1264,7 +1275,6 @@ public class QuoteLineTemplateContentController {
             
         }
         eventTable.recalculate();
-        
         if (quote.Count_of_HC_Products__c > 0) {
             showHcSummaryTable = single;
             showEventTable = empty;
@@ -1273,7 +1283,7 @@ public class QuoteLineTemplateContentController {
             if (quote.Count_of_RegOnline_Products__c == 0 && quote.OnArrival_360_Quote__c == FALSE && quote.Count_of_EC_Products__c>0) {
                 if (quote.Hide_Unit_Prices_on_Contract__c) {showHcSummaryTable = empty; showEventTable = empty;showEventNoPriceTable = single;} else {showHcSummaryTable = empty;showEventTable = single;showEventNoPriceTable = empty;}
             } 
-            else {showHcSummaryTable = empty;showEventTable = empty;showEventNoPriceTable = empty;}
+            else {showHcSummaryTable = empty;showEventTable = empty;showEventNoPriceTable = empty;}//showEventTable = quote.Count_of_EC_Products__c>0 ? single: empty;
         }
         if(quote.OnArrival_360_Quote__c){if (quote.Hide_Unit_Prices_on_Contract__c) {showOA360NoPrices = single;} else {showOA360 = single;}
         }
@@ -1472,7 +1482,7 @@ public class QuoteLineTemplateContentController {
             {
                 if(ql.Contract_Output_Grouping__c == quoteLine.Contract_Output_Grouping__c )
                 {
-                    if (ql.SBQQ__ProductCode__c != 'CV-SW-EC-OSS-BYODLCS' && ql.SBQQ__ProductCode__c != 'CV-PS-HC-OSS-OA360T1' && ql.SBQQ__ProductCode__c != 'CV-PS-HC-OSS-OA360STD' && eventName == event && ql.SBQQ__ProductCode__c != 'CV-PS-HC-OSS-CMPLFEE') {
+                    if (ql.SBQQ__ProductCode__c != 'CV-SW-EC-OSS-BYODLCS' && ql.SBQQ__ProductCode__c != 'CV-PS-HC-OSS-OA360T1' && ql.SBQQ__ProductCode__c != 'CV-PS-HC-OSS-OA360STD' && eventName == event && ql.SBQQ__ProductCode__c != 'CV-PS-HC-OSS-CMPLFEE' && ql.SBQQ__ProductCode__c != 'CV-SW-EC-OSS-DVCRNTL') {
                         
                        if (year == 1) {
                         totalQuantity += int_Quantity;

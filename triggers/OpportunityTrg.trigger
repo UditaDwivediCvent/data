@@ -10,15 +10,28 @@ Modified date : 28 June 2018
 Modified by :Kumud
 */
 trigger OpportunityTrg on Opportunity (after delete, after insert, after undelete,after update, before delete, before insert, before update) {
+
+    /*
+
+        following method will set a flag on ghost amendment opportunities
+
+        there is no SOQL or DML in the method
+
+        it just checks a static variable populated on amendment VF page and if it is, marks the inserted opportunities as ghosts
+
+    */
+
+    OpportunityTriggerDispatcher.flagGhostAmendmentOpportunities();
     
      /* Skip execution if this user is setup to exempt triggers. This helps in one time data load as well */
+
     if(!BypassTriggerUtility.isTriggerEnabledForThisUserOrProfileId(UserInfo.getUserId())){
             return;
     } 
     /*If This is True then it will be by Passed*/
     if(!Constants.IsOpportunityTriggerActive){
             return;
-    } 
+    }
     OpportunityTriggerDispatcher instOptyTrgDis=new OpportunityTriggerDispatcher();
     if(Trigger.isInsert && Trigger.isBefore){
         
@@ -29,7 +42,7 @@ trigger OpportunityTrg on Opportunity (after delete, after insert, after undelet
        
             instOptyTrgDis.OnAfterInsert(Trigger.new,Trigger.newMap); 
     }
-    else if(Trigger.isUpdate && Trigger.isBefore){
+    else if(Trigger.isUpdate && Trigger.isBefore){     
         
             instOptyTrgDis.OnBeforeUpdate(Trigger.new,Trigger.newMap,Trigger.oldMap); 
     }

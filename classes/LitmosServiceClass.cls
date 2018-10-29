@@ -48,7 +48,7 @@ public class LitmosServiceClass{
                 if(accountIdCompareSet.contains(userRec.Account_Id_Dev__c))
                 {
                     userRec.Litmos__Sync_Litmos__c = true;
-                    userRec.ShowLitmosTab__c=true;
+                   // userRec.ShowLitmosTab__c=true;  // commented by udita
                      //Inserting  Litmos Console Object to keep track...............
                     licObject = new Litmos_Integration_Console__c();
                     licObject.User_Id__c = 'User Checked true';
@@ -93,39 +93,55 @@ public class LitmosServiceClass{
         } 
     }
     @future(Callout=true)
-    public static void assignTeamToLitmosUser(set<string> litmusUserId,set<Id> UserIdSet){  
+    public static void assignTeamToLitmosUser(set<string> litmusUserId,set<Id> UserIdSet,set<id>accIdSet){  
+        MAP<ID,MAP<string,List<Mobile_Card__c>>> mobileCardVsRecType= new MAP<ID,MAP<string,List<Mobile_Card__c>>>() ;
+        list<user> userList = new list<user>();
+        list<Litmos_Integration_Console__c > litmosIntegrationLst = new list<Litmos_Integration_Console__c >();
+        String teamsId1;
+        String teamsId2;
+        String teamsId3;
+         for(Mobile_Card__c mob : [select id,Contract_Account_New__c,RecordType.name from Mobile_Card__c where Contract_Account_New__c  in: accIdSet and (RecordType.name ='Mobile - Onboarding Standard' or  RecordType.name='Mobile - Onboarding Lite')]){
+              if(!mobileCardVsRecType.containsKey(mob.Contract_Account_New__c)){
+                   mobileCardVsRecType.put(mob.Contract_Account_New__c,new map<string,List<Mobile_Card__c>>());
+                 }
+              if(!mobileCardVsRecType.get(mob.Contract_Account_New__c).containsKey(mob.RecordType.name)){
+                mobileCardVsRecType.get(mob.Contract_Account_New__c).put(mob.RecordType.name,new List<Mobile_Card__c>());
+              }
+              mobileCardVsRecType.get(mob.Contract_Account_New__c).get(mob.RecordType.name).add(mob);
+         }     
+        system.debug('----mobileCardVsRecType'+mobileCardVsRecType);   
         System.debug('Inside Future Method');
         
-        String teamsId = Label.Litmos_Teams_Id;
-        String APIKey = Label.Litmos_API_Key;
+        userList = [select id,Litmos__LitmosUserId__c,Account_Id_Dev__c from user where id in : UserIdSet];
+        for( user u : userList){
+          String APIKey = Label.Litmos_API_Key;
+          if(mobileCardVsRecType.containsKey(u.Account_Id_Dev__c)){
+            if(mobileCardVsRecType.get(u.Account_Id_Dev__c).size() > 1){
+              if(mobileCardVsRecType.get(u.Account_Id_Dev__c).containsKey('Mobile - Onboarding Lite')){
+                 teamsId1 = '927545';
+              }
+              if(mobileCardVsRecType.get(u.Account_Id_Dev__c).containsKey('Mobile - Onboarding Standard')){
+                 teamsId2 = '927548';
+              }
+            }        
+            else{
+                 teamsId3 = Label.Litmos_Teams_Id;
+            }   
+          }
+          else{
+                 teamsId3 = Label.Litmos_Teams_Id;
+          }
+        system.debug('*****teamsId1 '+teamsId1);
+        system.debug('*****teamsId2 '+teamsId2);
+        system.debug('*****teamsId3 '+teamsId3);  
         String bodyValue = '<Users>';
-        String endpoint = 'https://api.litmos.com/v1.svc/teams/'+teamsId+'/users?apikey='+APIKey+'&source=Cvent';
-        for(string litmosId : litmusUserId){
-            bodyValue = bodyValue + '<User><Id>'+litmosId+'</Id></User>';
-        }
+        bodyValue = bodyValue + '<User><Id>'+u.Litmos__LitmosUserId__c +'</Id></User>';
         bodyValue = bodyValue + '</Users>';
-        Httprequest req =  new Httprequest();
-        req.setEndpoint(endpoint);
-        req.setBody(bodyValue);
-        req.setHeader('Content-Type','application/xml');
-        req.setMethod('POST');
-        Http http = new Http();
-        HTTPResponse res = new HTTPResponse();
-        if(!test.isRunningTest()){
-            res = http.send(req);
-            system.debug(res.getStatusCode());
-            system.debug(res.getStatus());
-        }
-        System.debug('res************'+res);
-        //Inseting the result in the Litmos Integration Console Object......
         
+        /****** Creating Litmos console object *****/
         Litmos_Integration_Console__c licObject = new Litmos_Integration_Console__c();
-        
-        licObject.JSON_User_Id__c = JSON.serialize(litmusUserId);
+        licObject.JSON_User_Id__c = JSON.serialize(u.Litmos__LitmosUserId__c);
         licObject.Litmos_Integration_Body__c = bodyValue;
-        licObject.Success_Error_Result_Log__c = JSON.serialize(res.getStatusCode() +' // '+res.getStatus());
-        licObject.Integrated_User_Count__c = litmusUserId.size();
-        if(!test.isRunningTest()){
         
         if(teamsId1 != null){
            String endpoint = 'https://api.litmos.com/v1.svc/teams/'+teamsId1+'/users?apikey='+APIKey+'&source=Cvent';
@@ -145,5 +161,50 @@ public class LitmosServiceClass{
            //Litmos console object 
            licObject.Success_Error_Result_Log__c = JSON.serialize(res.getStatusCode() +' //1 '+res.getStatus());
         }
+        if(teamsId2 != null){
+           String endpoint2 = 'https://api.litmos.com/v1.svc/teams/'+teamsId2+'/users?apikey='+APIKey+'&source=Cvent';
+           Httprequest req1 =  new Httprequest();
+           req1.setEndpoint(endpoint2);
+           req1.setBody(bodyValue);
+           req1.setHeader('Content-Type','application/xml');
+           req1.setMethod('POST');
+           Http http1 = new Http();
+           HTTPResponse res1 = new HTTPResponse();
+           if(!test.isRunningTest()){
+                res1 = http1.send(req1);
+                system.debug(res1.getStatusCode());
+                system.debug(res1.getStatus());
+           }
+           System.debug('res1************'+res1);
+           //Litmos console object 
+           licObject.Success_Error_Result_Log__c = licObject.Success_Error_Result_Log__c + JSON.serialize(res1.getStatusCode() +' //2 '+res1.getStatus());
+        }
+       /* if(teamsId3 != null){
+           String endpoint3 = 'https://api.litmos.com/v1.svc/teams/'+teamsId3+'/users?apikey='+APIKey+'&source=Cvent';
+           Httprequest req2 =  new Httprequest();
+           req2.setEndpoint(endpoint3);
+           req2.setBody(bodyValue);
+           req2.setHeader('Content-Type','application/xml');
+           req2.setMethod('POST');
+           Http http2 = new Http();
+           HTTPResponse res2 = new HTTPResponse();
+           if(!test.isRunningTest()){
+                res2 = http2.send(req2);
+                system.debug(res2.getStatusCode());
+                system.debug(res2.getStatus());
+           }
+           System.debug('res2************'+res2);
+           //Litmos console object 
+           licObject.Success_Error_Result_Log__c = licObject.Success_Error_Result_Log__c +  JSON.serialize(res2.getStatusCode() +' //3 '+res2.getStatus());
+        }     */  
+        //Inseting the result in the Litmos Integration Console Object......
+                
+        licObject.Integrated_User_Count__c = litmusUserId.size();      
+        litmosIntegrationLst.add(licObject);
+      }  
+       if(!test.isRunningTest() && litmosIntegrationLst.size() > 0){
+            insert litmosIntegrationLst;
+        }       
     }
+    
 }

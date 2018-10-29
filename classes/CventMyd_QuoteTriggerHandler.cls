@@ -81,9 +81,12 @@ public without sharing class CventMyd_QuoteTriggerHandler {
     }
 
     /*
-       * #Added By Mohsin
-       * Whenever a new quote is being created, this method will check for the 'amended contract’ field on opportunity.
-       * If 'amended contract’ is not blank and this quote is not the first quote for the parent opportunity then it will not allow user to create the Quote.
+       #Added By Mohsin
+
+       Whenever a new quote is being created, this method will check for the 'amended contract’ field on opportunity.
+
+       If 'amended contract’ is not blank and this quote is not the first quote for the parent opportunity then it will not allow user to create the Quote.
+       
     */
     
     public static void checkForAmendedContract() {
@@ -109,23 +112,55 @@ public without sharing class CventMyd_QuoteTriggerHandler {
             }
 
         }
-        system.debug('quoteInsertionIdToOpportunity....:'+quoteInsertionIdToOpportunity);
-       for(Opportunity opp : quoteInsertionIdToOpportunity.values()) {
 
-            if(opportunityIdToQuotes.containsKey(opp.Id) && opp.SBQQ__AmendedContract__c != null) {
+        if(Trigger.isInsert) {
+        
+            for(Opportunity opp : quoteInsertionIdToOpportunity.values()) {
 
-                List<SBQQ__Quote__c> quotes = opp.SBQQ__Quotes2__r;
+                if(opportunityIdToQuotes.containsKey(opp.Id) && opp.SBQQ__AmendedContract__c != null) {
 
-                if(quotes.size() > 0) {
+                    List<SBQQ__Quote__c> quotes = opp.SBQQ__Quotes2__r;
 
-                    System.debug('opportunityId 1: ' + opp.Id);
+                    if(quotes.size() > 0 || CventMyd_ContractAmendmentController.contractIdsBeingAmended.isEmpty()) {
 
-                    for(SBQQ__Quote__c quote : opportunityIdToQuotes.get(opp.Id)) {
+                        System.debug('opportunityId 1: ' + opp.Id);
 
-                        quote.addError('You’ve already started an amendment, in order to change create a new opportunity and delete this one');
+                        for(SBQQ__Quote__c quote : opportunityIdToQuotes.get(opp.Id)) {
+
+                            quote.addError('You’ve already started an amendment; in order to change create a new quote, create a new opportunity.');
+
+                        }
+                    
+                    }
+
+                }
+
+            }
+
+        }
+
+        else if(Trigger.isUpdate) {
+
+            for(Id opportunityId : opportunityIdToQuotes.keySet()) {
+
+                List<SBQQ__Quote__c> quotes = opportunityIdToQuotes.get(opportunityId);
+
+                for(SBQQ__Quote__c quote : quotes) {
+
+                    if(quote.opportunityAmendedContractId__c != null) {
+
+                        Boolean oldPrimaryBoolean = ((SBQQ__Quote__c)Trigger.oldMap.get(quote.Id)).SBQQ__Primary__c;
+
+                        Boolean newPrimaryBoolean = quote.SBQQ__Primary__c;
+
+                        if(CventMyd_ContractAmendmentController.contractIdsBeingAmended.isEmpty() && oldPrimaryBoolean != newPrimaryBoolean) {
+
+                            quote.addError('It is not permitted to explicitly change the primary checkbox of an existing quote sitting on an amendment opportunity.');
+
+                        }
 
                     }
-                
+
                 }
 
             }
@@ -202,7 +237,11 @@ public without sharing class CventMyd_QuoteTriggerHandler {
 
                     quote.Contract_Term_Years__c = childContract.Parent_Contract_Term_Years__c;
 
+                    System.debug('Child Contract End Date before'+childContract.EndDate);
+
                     quote.SBQQ__StartDate__c = childContract.EndDate.addDays(1);
+
+                     System.debug('Child Contract End Date after'+childContract.EndDate);
 
                     if(childContract.Upcoming_Renewal_Type__c == 'Contract Renewal') {
 
@@ -422,7 +461,7 @@ public without sharing class CventMyd_QuoteTriggerHandler {
 
             }            
 
-            else if( quote.SBQQ__Type__c == 'Renewal' && ContractTrgHelperCls.contractIdsBeingRenewed.isEmpty() && (System.isFuture() || CventMyd_ContractGenerationMonitor.isRunning) ) {
+            else if( quote.SBQQ__Type__c == 'Renewal' && !quote.msaUpload__c && ContractTrgHelperCls.contractIdsBeingRenewed.isEmpty() && (System.isFuture() || CventMyd_ContractGenerationMonitor.isRunning) ) {
 
                 if(System.isFuture() && !CventMyd_ContractGenerationMonitor.isRunning) {
 
@@ -570,7 +609,17 @@ public without sharing class CventMyd_QuoteTriggerHandler {
 
     public static void handleBeforeUpdate() {
 
+        checkForAmendedContract();
+
         for(SBQQ__Quote__c quote : (List<SBQQ__Quote__c>)Trigger.new) {
+
+            System.debug('quote.Year_2_End_Date__c: ' + quote.Year_2_End_Date__c);
+
+            System.debug('quote.Year_3_End_Date__c: ' + quote.Year_3_End_Date__c);
+
+            System.debug('quote.Year_4_End_Date__c: ' + quote.Year_4_End_Date__c);
+
+            System.debug('quote.Year_5_End_Date__c: ' + quote.Year_5_End_Date__c);
 
             if(quote.Multiple_Years_Commitment__c && quote.msaUpload__c) {
 
@@ -638,7 +687,7 @@ public without sharing class CventMyd_QuoteTriggerHandler {
 
             catch(Exception e) {
 
-                System.debug(CventMyd_UtilityMethods.getExceptionString(e));
+                System.debug('In general it is bad practice to just catch and debug exceptions... here it should be ok: ' + CventMyd_UtilityMethods.getExceptionString(e));
 
             }
 
@@ -667,6 +716,14 @@ public without sharing class CventMyd_QuoteTriggerHandler {
         Boolean updatePreviousQuotes = false;  
 
         for(SBQQ__Quote__c quote : (List<SBQQ__Quote__c>)Trigger.new) {
+
+            System.debug('quote.Year_2_End_Date__c: ' + quote.Year_2_End_Date__c);
+
+            System.debug('quote.Year_3_End_Date__c: ' + quote.Year_2_End_Date__c);
+
+            System.debug('quote.Year_4_End_Date__c: ' + quote.Year_2_End_Date__c);
+
+            System.debug('quote.Year_5_End_Date__c: ' + quote.Year_2_End_Date__c);            
 
             if(quote.jsonString__c == null) {
 
