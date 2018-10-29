@@ -1,0 +1,230 @@
+<apex:page controller="SupportPage_Controller" sidebar="false" standardStylesheets="false">
+<apex:form >
+    <head>
+        <!--<link rel="icon shortcut" href="https://cvent--c.na78.content.force.com/servlet/servlet.ImageServer?id=0151N000004QTLu&oid=00D00000000hXfW&lastMod=1521738212000" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-resource.js"></script> 
+        <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link href="https://netdna.bootstrapcdn.com/font-awesome/2.0/css/font-awesome.css" rel="stylesheet"/>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>-->
+        
+        <link rel="icon shortcut" href="https://cvent--c.na78.content.force.com/servlet/servlet.ImageServer?id=0151N000004QTLu&oid=00D00000000hXfW&lastMod=1521738212000" />
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-resource.js"></script> 
+        <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script> 
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link href="https://netdna.bootstrapcdn.com/font-awesome/2.0/css/font-awesome.css" rel="stylesheet"/>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        
+        </head>
+        <!--...........SHOW/HIDE Section................-->
+        <script>
+        var app = angular.module('MyForm', ['ui.bootstrap', 'ngResource']);
+        app.controller('myCtrl', function ($scope) { 
+            $scope.CASES = {!caseJSONString};
+            $scope.currentPage = 1;
+            $scope.totalItems = $scope.CASES.length; 
+            $scope.numPerPage = 10;
+            $scope.paginate = function (value){ 
+                var begin, end, index; 
+                begin = ($scope.currentPage - 1) * $scope.numPerPage; 
+                end = begin + $scope.numPerPage; 
+                index = $scope.CASES.indexOf(value); 
+                return (begin <= index && index < end); 
+            };
+        });
+        </script> 
+
+        <style>
+        .openDot {
+    height: 8px;
+    width: 8px;
+    background-color: #00CA9D;
+    border-radius: 50%;
+    display: inline-block;}
+    
+     .closedDot {
+    height: 8px;
+    width: 8px;
+    background-color: #F45F5F;
+    border-radius: 50%;
+    display: inline-block;}
+
+    .AIRDot {
+    height: 8px;
+    width: 8px;
+    background-color: #00CA9D;
+    border-radius: 50%;
+    display: inline-block;}
+
+   .WIPDot {
+    height: 8px;
+    width: 8px;
+    background-color: #FFA646;
+    border-radius: 50%;
+    display: inline-block;}
+.IRDot {
+    height: 8px;
+    width: 8px;
+    background-color: #FFA646;
+    border-radius: 50%;
+    display: inline-block;}
+    .EIRDot {
+    height: 8px;
+    width: 8px;
+    background-color: #FFA646;
+    border-radius: 50%;
+    display: inline-block;}
+    .PFADot {
+    height: 8px;
+    width: 8px;
+    background-color: #FFA646;
+    border-radius: 50%;
+    display: inline-block;}
+        .center {
+            margin: auto;
+            width: 60%;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        /* GB STYLES */
+        
+        .pad-md {
+            padding-top: 1em;
+            padding-bottom: 1em;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .button-blue {
+            color: #fff;
+            background: none !important;
+            background-color: #0183EB !important;
+            border-color: #0183EB;
+        }
+        .button-blue:hover {
+            color: #fff;
+            background-color: 0071cb;
+            border-color: 0071cb;
+        }
+        
+.button-outline-blue, .button-outline-blue:visited {
+    color: #0183EB!important;
+    background: none !important;
+    background-color: none !important;
+    border: 2px solid #0183EB !important;
+}
+.button-outline-blue:hover, .button-outline-blue:focus {
+    color: #fff !important;
+    background-color: #0183EB !important;
+    border-color: #0183EB !important;
+}
+        
+        .table-cases tbody tr td {
+            padding: 16px 8px;
+        }
+        
+        .table-cases tbody tr td li {
+          margin-right: 4px;
+          box-shadow: 0px 2px 4px rgba(0,0,0,0.125);
+        }
+        </style>
+        
+
+        <body  ng-app="MyForm">
+         <main id="mainId" class="container pad-md">
+         <div class="row">
+            <div class="col-lg-12 cases pad-md">
+                
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3>Cases</h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <div style="text-align:right;">
+                                <input type="submit" class="submit button button-outline-blue" value="Give Feedback" onclick="window.open('/apex/Feedback');"/>
+                                <button type="button" onclick="closeAndRefresh();" class="submit button button-blue">New Case</button>
+                                <!--<input type="submit" class="submit button button-blue" value="New Case" onclick="closeAndRefresh();"/>-->
+                                <apex:actionFunction action="{!createTracker}" name="closeAndRefresh" reRender=""/>
+                                <!--<button type="button" class="button button-blue" onclick="return closeAndRefresh();" id="newCaseId">New Case</button>-->
+                            </div>
+                        </div>
+                    </div>
+            
+             </div>
+            <div class="col-sm-12">
+                <div ng-controller="myCtrl">
+                    <table  class="table table-hover table-cases"  style="background-color:white" border="0" cellspacing="0" cellpadding="0" width="0">
+                    <thead>
+                        <tr>
+                         <th width="15%">Case Number</th>
+                         <th width="25%" valign="top">Status</th>
+                         <th valign="45%">Subject</th>
+                         <th width="15%" valign="top">Date/Time Opened</th>
+                       </tr>
+                       </thead>
+                       <tbody>
+                       <tr ng-repeat="case in CASES | filter:paginate">
+                            <td><span> <a ng-href="/CaseDetail?Id={{case.Id}}" target="_blank"><span ng-bind="case.CaseNumber"/></a></span></td>
+                            <td>
+                                <!--<li ng-Class="{'openDot' : case.Status == 'Open', 'AIRDot' : case.Status == 'Additional Information Received' , 'closedDot' : case.Status == 'Closed' , 'WIPDot' : case.Status == 'Work in Progress'}"/>-->
+                                <li ng-Class="{'openDot' : case.Status == 'Open', 
+'AIRDot' : case.Status == 'Additional Information Received' , 
+'closedDot' : case.Status == 'Closed' , 
+'WIPDot' : case.Status == 'Work in Progress',
+'IRDot' : case.Status == 'Information Requested',
+'EIRDot' : case.Status == 'Escalated In Review',
+'EIRDot' : case.Status == 'Escalated',
+'PFADot' : case.Status == 'Pending Future Activity',
+}"/>
+                                <span ng-bind="case.Status"/>
+                            </td>
+                            <td><b><a ng-href="/CaseDetail?Id={{case.Id}}" target="_blank"><span ng-bind="case.Subject"/></a></b></td>
+                            <td><span ng-bind="case.CreatedDate | date: 'MM/dd/yyyy'"/></td>
+                       </tr>
+                       </tbody>
+                    </table>
+                    <pagination total-items="totalItems" ng-model="currentPage" 
+                                max-size="5" boundary-links="true" 
+                                items-per-page="numPerPage" class="pagination-sm" ng-click="highlightAgain();"> 
+                    </pagination>
+                </div>
+            </div>
+           </div>
+         </main> 
+        <!--...................ENDS HERE.................-->
+</body>
+</apex:form>
+</apex:page>

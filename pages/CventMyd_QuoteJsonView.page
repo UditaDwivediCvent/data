@@ -1,0 +1,45 @@
+<apex:page showHeader="false" sidebar="false" standardController="SBQQ__Quote__c" extensions="CventMyd_QuoteJsonController">
+
+	<script>
+
+		var jsonString;
+
+		window.onload = setTimeout(function(){loadJson();}, 600);
+
+		function loadJson() {
+
+			var quoteObject = JSON.parse('{!quote.jsonString__c}');
+
+			document.getElementById("preId0").innerText = JSON.stringify(quoteObject,null,2);
+
+			console.log('DEBUG: did this happen 0');
+
+			console.log('DEBUG: quoteLinesJson: ' + {!quoteLinesJson});
+
+			var quoteLines = {!quoteLinesJson};
+
+			console.log('DEBUG: quoteLines: ' + quoteLines);
+
+			quoteLines.forEach(function(quoteLine) {
+
+				console.log('DEBUG: quoteLine.jsonString__c: ' + quoteLine.jsonString__c);
+
+				var quoteLineObject = JSON.parse(quoteLine.jsonString__c);
+
+				document.getElementById(quoteLine.Id).innerText = 'line: ' + quoteLine.SBQQ__Number__c + '; year: ' + quoteLine.term__c + ' ' + JSON.stringify(quoteLineObject,null,2);
+
+			});
+
+		}
+
+	</script>
+
+	<pre style="font-size:10px; float:left;" id="preId0">{!quote.jsonString__c}</pre>
+
+	<apex:repeat value="{!quoteLines}" var="ql">
+
+		<pre style="font-size:10px; float:left;" id="{!ql.Id}">{!ql.jsonString__c}</pre>
+
+	</apex:repeat>
+	
+</apex:page>

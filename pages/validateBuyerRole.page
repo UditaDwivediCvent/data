@@ -1,0 +1,34 @@
+<apex:page sidebar="false" showHeader="false" extensions="validateBuyerRoleOnContact" standardController="contact">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+<style>
+
+.form-control {
+    display: block;
+    width: 82%;
+    height: 34px;
+    padding: 7px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #231196;
+    background-color: #fff;
+    background-image: none;
+    border: 0px solid #ccc;
+    border-radius: 4px;
+    }
+    </style>
+     <script type="text/javascript">
+        function confirm() {
+          alert('Are you sure you want to validate Contact?');
+        }
+     </script> 
+  <apex:form styleClass="form" id="frm">
+   <div class='form-group'>
+   <apex:outputText rendered ="{!if(currentRecordConRole.size > 0,true,false)}" value=" The Contact Role for this customer is not validated in last 1 year. Please click below to Validate the Contact Buyer Role." styleClass="form-control">  </apex:outputText>
+  <!-- <apex:commandLink rendered ="{!if(currentRecordConRole.size > 0,true,false)}" value="Validate Buyer Role" onclick="confirm()" reRender="frm" action="{!validateContact}" style="margin-left: 262px;color: red;"></apex:commandLink>-->
+  <apex:outputLink rendered ="{!if(currentRecordConRole.size > 0,true,false)}" value="{!URLFOR($Action.Contact_Role__c.Edit, currentRecordConRole[0].id, ['retURL'='/home/home.jsp'])}" target="_blank" style="margin-left: 262px;color: red;"> 
+                      Validate Buyer Role
+ </apex:outputLink>
+
+  </div>  
+  </apex:form>
+</apex:page>

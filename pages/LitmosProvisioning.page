@@ -1,0 +1,35 @@
+<apex:page controller="LitmosProvisionClass" sidebar="false">
+    <apex:form >
+        <apex:pageBlock title="Search User">
+            <apex:inputText label="Enter User's Email for Search" value="{!Email}" html-placeholder="Search Email"/>
+            <apex:commandButton value="Click Here" action="{!SearchUser}"/>
+        </apex:pageBlock>
+        <!-- Show User List-->
+        <apex:pageBlock title="Community Users" rendered="{!showUserList}">
+            <apex:pageBlockTable value="{!userList}" var="userRec">
+                <apex:column value="{!userRec.Name}"/>
+                <apex:column value="{!userRec.Contact.Account.Name}"/>
+                <apex:column value="{!userRec.Email}"/>
+                <apex:column headerValue="Sync Litmos">
+                    <apex:outputField value="{!userRec.Litmos__Sync_Litmos__c}">
+                        <apex:inlineEditSupport event="ondblClick" rendered="{!!userRec.Litmos__Litmos_Activated__c}"/>
+                    </apex:outputField>
+                </apex:column>
+                <apex:column headerValue="ShowLitmosTab">
+                    <apex:outputField value="{!userRec.ShowLitmosTab__c}">
+                        <apex:inlineEditSupport event="ondblClick"/>
+                    </apex:outputField>
+                </apex:column>
+
+                <apex:column value="{!userRec.Litmos__Litmos_Activated__c}"/>
+                <apex:column value="{!userRec.Litmos__LitmosUserId__c}"/>
+                
+            </apex:pageBlockTable>
+            <apex:commandButton value="Sync Litmos" action="{!SyncLitmos}"/>
+        </apex:pageBlock>
+        <!--Show no user found message-->
+        <apex:actionRegion rendered="{!showNoUserMessage}">
+            <b><h1 style="color: red;">No user found with this email address.</h1></b>
+        </apex:actionRegion>
+    </apex:form>
+</apex:page>

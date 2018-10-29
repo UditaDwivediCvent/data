@@ -1,0 +1,16 @@
+<apex:page standardController="Contact" extensions="ControllerBuyerRoleCreation">
+  <apex:form > 
+  <apex:outputPanel rendered="{!IF((conList[0].DateTime_TeamMember__c == null || (Today() - conList[0].DateTime_TeamMember__c > 180)) , true, false)}"> 
+  <apex:outputPanel rendered="{!conRoleList.size < 1}">
+     <h2 style="font-size:15px;color:brown;"> There is no Contact Role created for this contact.Click on YES if you wish to create buyer role for this contact.</h2><br/><br/>
+       <apex:commandButton immediate="true" oncomplete="abc();" value="Yes" style="margin-right: 31px;font-size: 15px;"/>
+       <apex:commandButton action="{!callNo}" value="No"  oncomplete="window.top.location.reload()"  style="font-size: 15px;"/>
+    </apex:outputPanel>  
+  </apex:outputPanel> 
+  </apex:form>
+<script>
+function abc() {
+  window.open("https://cvent--data.cs92.my.salesforce.com/a09/e?CF00No000000Dxuos={!conList[0].Account.name}&CF00No000000Dxuos_lkid={!AccId}&retURL=%2F{!AccId}&RecordType=012o00000012XyW&ent=01I000000000GCO&CF00N000000071h6R={!conList[0].name}", "_blank");
+}
+</script>
+</apex:page>

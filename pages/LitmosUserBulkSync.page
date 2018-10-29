@@ -1,0 +1,17 @@
+<apex:page controller="LitmosUserBulkSyncClass" contentType="{!contentType}" cache="true" sidebar="false" ><!--readOnly="true"-->
+<apex:form rendered="{!contentType='text/html'}">
+   <apex:sectionHeader title="Litmos Bulk Sync"/>
+    <apex:pageBlock tabStyle="user">
+      <apex:pageBlockSection columns="2" title="Litmos Bulk User Sync. It will only work in CSV(Comma Delimeted) format and only column one should be there with header as 'Email'. Any other format of less/more column will not work." collapsible="false">
+        <apex:inputFile value="{!csvFileBody}"  filename="{!csvAsString}" id="inputFileId"/>        
+        <apex:commandButton value="Upload User Email CSV" action="{!compareRecords}"/>
+      </apex:pageBlockSection>  <marquee direction = "right"  width="70%" style="font-size: 18px;"> Please upload a CSV Format file  with header as 'Email'</marquee>
+    </apex:pageBlock>  
+  </apex:form>
+  <apex:actionRegion rendered="{!contentType='application/vnd.ms-excel#RecordsNotSynced.csv'}">
+    Email
+    <apex:repeat value="{!emailSetV}" var="email">
+      {!email}
+    </apex:repeat>
+  </apex:actionRegion>
+</apex:page>

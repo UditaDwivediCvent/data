@@ -1,0 +1,386 @@
+<apex:page standardController="Case" showHeader="true" sidebar="false" extensions="ContactSupportCls">
+
+    <apex:form >
+        <apex:actionRegion >
+            <apex:actionFunction name="insertDataNew" reRender="#" action="{!search}">  
+                <apex:param name="param1" assignTo="{!searchTerm}" value=""/> 
+                <apex:param name="param2" assignTo="{!productSel}" value=""/>
+            </apex:actionFunction>
+        </apex:actionRegion>
+        <head>
+            <meta charset="utf-8"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <!--<title>Help &amp; Training - Community Portal</title>-->
+            <title>Cvent Community | Get Help Now</title>   
+            <meta name="description" content="Have questions about a Cvent product or feature? Need a hand with something that just isn’t working right? There are several ways to get the guidance you need."/>
+            <style>
+            /* GB STYLES */
+            .section--search { background: #0183EB !important; padding: 2em 0 2em; }
+        .header .search {
+        border: 1px solid #ccc !important;
+        background: #fff;
+        font-size: 1.25em;
+        color: #444;
+        width: 90% !important;
+        box-shadow: 0px 3px 6px rgba(0,0,0,0.125);
+        
+        border-radius: 3px 0px 0px 3px !important;
+        }
+        .header .search::placeholder {
+        color: #aaa;
+        }
+        .header .submit {
+        border-radius: 0px 3px 3px 0px !important;
+        padding: 13px 0 13px 0 !important;
+        font-size: 15px !important;
+        box-shadow: 0px 3px 6px rgba(0,0,0,0.125);
+        }
+        
+        .left-top img.logo {
+        padding: 0 !important;
+        }
+
+        .top-band {
+         background: #fff !important;
+       }
+       .left-top div#navigation ul li a {
+         color: #0183EB !important;
+       }
+       .left-top div#navigation ul li.active a {
+        background: #eee;
+      }
+      .left-top div#navigation ul li.btn-login a, .left-top div#navigation ul li.btn-login a:hover {
+        color: #fff !important;
+      }
+      .left-top div#navigation ul li a:hover {
+       color: #0183EB !important;
+       text-decoration: underline;
+     }
+
+     li.btn-login {
+      float: right;
+    }
+    li.btn-login a {
+      background: #0183EB;
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 14px;
+      display: inline-block;
+    }
+    li.btn-login a:hover {
+      backround:#0069bd !important;
+      color: #fff !important;
+    }
+    </style>
+        </head>
+        <body id="help" class="inner">
+           
+        <main>
+            <header>
+                <section class="header pad-topbot-twentyfive">
+                    <div class="container">
+                        <div class="row col-md-12 reposition">
+                        </div>
+                        <div class="row col-md-12">
+                            <form id="search-form">
+                                <input type="text" class="search" placeholder="Search the Cvent Community" required="true" id="search" value="{!searchTerm}" />
+                                <input type="submit" class="submit" value="search" onclick="closeAndRefresh()"/>
+                            </form>
+                        </div>
+                    </div>
+                    <style>
+                        .header .filter{display:block !important; }
+                        .header .filter ul li {margin: 0 10px 0 0;}
+                        .prod-filter.highlight {color: #173d66 !important; background: #ffffff !important;}
+                    </style>
+                </section>
+            </header>
+            <section id="communitysupport">
+                <div class="container">
+                    
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 text-center">
+                            <a class="cta-ask-community" href="/_ui/chatter/service/ChatterAnswersUi#!/feedtype=POPULAR&dc=All&criteria=OPENQUESTIONS" target="_blank">
+                                <img src="/resource/CommunityAssets/images/ask-community.png" height="126" width="126"/> 
+                                <div style="clear:both;"></div>
+                                <h2>Ask The Community</h2>
+                                <p>Post a question to the thousands of seasoned planners and hoteliers that make up our community. Whatever it is, chances are someone&#39;s figured it out before.</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-3 text-center"  style="cursor: pointer;">
+                            <a class="cta-chat"><!-- href=""-->
+                            <!--<script type='text/javascript' src='https://c.la3-c1-was.salesforceliveagent.com/content/g/js/34.0/deployment.js'></script>
+                            <script type='text/javascript'>
+                            liveagent.init('https://d.la3-c1-was.salesforceliveagent.com/chat', '572000000008OUb', '00D00000000hXfW');
+                            </script>
+                            <img id="liveagent_button_online_573000000008OVF" style="border: 0px none; cursor: pointer" onclick="liveagent.startChat('573000000008OVF')" src="/resource/CommunityAssets/images/chat-on.png" width="126" height="126" />
+                            <img id="liveagent_button_offline_573000000008OVF" style="border: 0px none; "  src="/resource/CommunityAssets/images/chat-off.png" width="126" height="126" />
+                            <script type="text/javascript">
+                            if (!window._laq) { window._laq = []; }
+                            window._laq.push(function(){liveagent.showWhenOnline('573000000008OVF', document.getElementById('liveagent_button_online_573000000008OVF'));
+                            liveagent.showWhenOffline('573000000008OVF', document.getElementById('liveagent_button_offline_573000000008OVF'));
+                            });
+                            </script>-->
+<script type='text/javascript' src='https://c.la1-c1-ord.salesforceliveagent.com/content/g/js/42.0/deployment.js'></script>
+                            <script type='text/javascript'>
+                            liveagent.init('https://d.la1-c1-ord.salesforceliveagent.com/chat', '572000000008OUb', '00D00000000hXfW');
+                            </script>
+                            <img id="liveagent_button_online_573000000008OVF" onclick="liveagent.startChat('573000000008OVF')" src="/resource/CommunityAssets/images/chat-on.png" width="126" height="126"  />
+                            <img id="liveagent_button_offline_573000000008OVF" src="/resource/CommunityAssets/images/chat-off.png" width="126" height="126"  />
+                            <div style="clear:both;"></div>
+                                <h2>Chat With Us</h2>
+                                <p>Available from Sunday 9 pm to Friday 9 pm ET.</p>
+                            <script type="text/javascript">
+                            if (!window._laq) { window._laq = []; }
+                            window._laq.push(function(){liveagent.showWhenOnline('573000000008OVF', document.getElementById('liveagent_button_online_573000000008OVF'));
+                            liveagent.showWhenOffline('573000000008OVF', document.getElementById('liveagent_button_offline_573000000008OVF'));
+                            });
+                            </script>
+
+                                <!--<img src="/resource/CommunityAssets/CommunityAssets/images/chat-off.png" height="126" width="126"/> -->
+                                
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-3 text-center">
+                            <a class="cta-open-case" href="/apex/FindHelp" target="_blank"><!--/500/e?retURL=%2F500%3Ffcf%3D00B000000097v9y-->
+                                <img src="{!URLFOR($Resource.CommunityAssets, '/images/open-case.png')}" height="126" width="126"/> 
+                                <div style="clear:both;"></div>
+                                <h2>Open A Case</h2>
+                                <p>Fill out a short form and a Product Consultant will get back to you within 24 hours. This method allows you to attach screenshots or files, which can be vital to troubleshooting.</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-3 text-center">
+                            <a class="cta-call-us" href="http://www.cvent.com/en/contact/support-hours-and-numbers.shtml" target="_blank">
+                                <img src="{!URLFOR($Resource.CommunityAssets, '/images/call.png')}" height="126" width="126"/> 
+                                <div style="clear:both;"></div>
+                                <h2>Call Us</h2>
+                                <p>For critical issues, dial one of our toll-free numbers. Have your account information ready to expedite the process.</p>
+                            </a>
+                        </div>
+                        
+                    </div>
+                    
+                    <!--<div class="row col-md-8 col-md-offset-2" id="announcement-box">
+                        <div class="announcement">
+                            <span class="alert-icon"><img src="images/announcement-icon.png" alt=""/></span><p><strong>Announcement</strong>&nbsp;&nbsp;New Status Site is Live</p><span class="cross-icon-btn"><img class="cross-btn-img" src="images/cross-button.png"></span>
+                        </div>
+                    </div>-->
+                </div>
+            </section>
+            
+            
+            <style>
+            .cta-ask-community,.cta-chat,.cta-open-case,.cta-call-us {display:inline-block; margin: 25px 0 0 0;}
+            .cta-ask-community img,.cta-chat img,.cta-open-case img,.cta-call-us img {margin: 0 0 10px 0;}
+            .cta-ask-community h2,.cta-chat h2,.cta-open-case h2,.cta-call-us h2 {font-size: 16px; font-weight: bold; color: #0c71b7;}
+            .cta-ask-community p,.cta-chat p,.cta-open-case p,.cta-call-us p {color: #323232; font-size: 16px; margin: 15px 0 20px 0; line-height: 22px;}
+            .announcement {background: #bce4f4; border: 2px solid #35b4e2; padding: 20px 0 20px 12%;}
+            .announcement span.alert-icon {float: left;}
+            .announcement span.alert-icon img {margin: 0 20px 0 0;}
+            .announcement p {margin: 6px 0 4px 0;}
+            .announcement span.cross-icon-btn {position: absolute; right: 25px; top: 5px; cursor: pointer;}
+            </style>
+        
+        </main>
+        
+        
+        <!-- jQuery (necessary for Bootstraps JavaScript plugins) 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        Validation Plugin 
+        <script src="assets/js/jquery.validate.min.js"></script>
+        Include all compiled plugins (below), or include individual files as needed 
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/new.js"></script>
+        
+         <script>
+            $(".cross-btn-img" ).click(function() {
+                $("#announcement-box").hide();
+            });
+            </script>-->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script>
+                function closeAndRefresh(){
+                    var value =  $("#search").val();
+                    var product= '';
+                    //alert();
+                    //alert(value);
+                    /*var product;
+                    if($("#Abstract_Managements").attr("class").indexOf("highlight") >=0 )
+                    product = 'Abstract_Managements';
+                    if($("#Appointment").attr("class").indexOf("highlight") >=0 )
+                    product = 'Appointment';
+                    if($("#CSN_Planner").attr("class").indexOf("highlight") >=0 )
+                    product = 'CSN_Planner';
+                    if($("#CSN_Supplier").attr("class").indexOf("highlight") >=0 )
+                    product = 'CSN_Supplier';
+                    if($("#CrowdCompass").attr("class").indexOf("highlight") >=0 )
+                    product = 'CrowdCompass';
+                    if($("#Event").attr("class").indexOf("highlight") >=0 )
+                    product = 'Event';
+                    if($("#Survey").attr("class").indexOf("highlight") >=0 )
+                    product = 'Survey';
+                    if($("#CrowdTorch_Ticketing").attr("class").indexOf("highlight") >=0 )
+                    product = 'CrowdTorch_Ticketing';*/
+                    //if($("#Meetings_Management").attr("class").indexOf("highlight") >=0 )
+                    //product = 'Meetings_Management';
+                    /*if($("#OnArrival").attr("class").indexOf("highlight") >=0 )
+                    product = 'OnArrival';*/
+                    //if($("#SocialWall").attr("class").indexOf("highlight") >=0 )
+                    //product = 'SocialWall';
+                    //if($("#eMarketing").attr("class").indexOf("highlight") >=0 )
+                    //product = 'eMarketing';
+                    
+                    if(value ==''){
+                        //alert('Please Enter Some Text To Search');
+                    }else{
+                        //alert(value);
+                        //alert(product);
+                        //window.location = '';
+                        insertDataNew(value,product);
+                    }
+                }
+            </script>
+            
+        </body>
+    </apex:form>
+<!--
+<div id="content" style="background-color:#fff;width:941px; margin: 0px auto 0;">
+              <style>
+                .support-channels-container {
+                    margin: 40px 25px;
+                    width: 415px;
+                    float: left;
+                }
+                .support-channels-container a {
+                    margin: 0px 5px 30px 0px;
+                      height: 126px;
+                      width: 126px;
+                      cursor: pointer;
+                      display: block;
+                }
+                .support-channels-container span{
+                  padding-top: 38px;
+                  padding-left: 10px;
+                  float: left;
+                  width: 280px;
+                  }
+                
+                  .lightBox .support-button-text {
+                  position: absolute;
+                  top: -47px;
+                  left: 10px;
+                  color: black;
+                  text-align: center;
+                  font-size: 12px;
+                  font-family: arial;
+                  font-weight: bold;
+                  width: 105px;
+                  height: 30px;
+                  white-space: wrap;
+                  word-wrap: break-word;
+                  overflow: hidden;
+                  text-indent:-9999999px
+                    }
+                 a.text-block{text-decoration:none;color:#000;font-size:13px;height:auto !important;width:auto !important} 
+                 a.text-block:hover{color:#000;text-decoration:none}
+                  
+            </style>
+                 <div>
+                   <c:Portal2pointO_searchComponent />
+                </div>
+      
+              <div  style="background-color:#ffffff">
+            <div class="lightBox" id="unAuthSupportOptions">
+                <div class=" support-channels-container support-channels-table" id="supportChannelCall">
+      
+                           <a class="button-call" href="/_ui/chatter/service/ChatterAnswersUi#!/feedtype=POPULAR&dc=All&criteria=OPENQUESTIONS" id="button-call-link" style="float: left;" title="Ask the Community" >
+                 
+                         <apex:image url="{!URLFOR($Resource.CommunityAssets, 'CommunityAssets/images/ask-community.png')}" width="126" height="126" /> 
+                        <div class="support-button-text" style="position: relative;">
+                           ASK THE COMMUNITY 
+                        </div>
+                    </a> 
+                    <span>
+                    <a class="text-block" href="/_ui/chatter/service/ChatterAnswersUi#!/feedtype=POPULAR&dc=All&criteria=OPENQUESTIONS">
+                        <label><b>ASK THE COMMUNITY</b></label>
+                        <br/>
+                        Post a question to the thousands of seasoned planners and hoteliers that make up our community. Whatever it is, chances are someone s figured it out before.
+                    </a>
+                    </span>
+                </div>
+                
+                
+                
+                <div class=" support-channels-container support-channels-table" id="supportChannelCommunity">
+
+                                <a class="button-community" href="" style="float: left;" title="CHAT WITH US">
+
+                                <script type='text/javascript' src='https://c.la3-c1-was.salesforceliveagent.com/content/g/js/34.0/deployment.js'></script>
+                                <script type='text/javascript'>
+                                liveagent.init('https://d.la3-c1-was.salesforceliveagent.com/chat', '572000000008OUb', '00D00000000hXfW');
+                                </script>
+                                <img id="liveagent_button_online_573000000008OVF" style="display: none; border: 0px none; cursor: pointer" onclick="liveagent.startChat('573000000008OVF')" src="/resource/1433838249000/CommunityAssets/CommunityAssets/images/chat-on.png" width="126" height="126" /><img id="liveagent_button_offline_573000000008OVF" style="display: none; border: 0px none; " src="/resource/1433838249000/CommunityAssets/CommunityAssets/images/chat-off.png" width="126" height="126" />
+                                <script type="text/javascript">
+                                if (!window._laq) { window._laq = []; }
+                                window._laq.push(function(){liveagent.showWhenOnline('573000000008OVF', document.getElementById('liveagent_button_online_573000000008OVF'));
+                                liveagent.showWhenOffline('573000000008OVF', document.getElementById('liveagent_button_offline_573000000008OVF'));
+                                });</script>
+
+                            <div class="support-button-text" style="position: relative;">
+                                CHAT WITH US
+                            </div>
+                        </a>
+                        <span>
+                            <label><b>CHAT WITH US</b></label>
+                            <br/>
+                            The fastest way to correspond with a Product Consultant. Though only available weekdays from 9 am to 9 pm ET. When chat is unavailable, the icon will be grey.
+                        </span>
+                </div>
+                
+                <div class="support-channels-container support-channels-table" id="supportChannelCase">
+
+                        <a class="button-case" href="/500/e?retURL=%2F500%3Ffcf%3D00B000000097v9y" style="float: left;" title="If you can't find your answer or need personalized assistance, simply open a case. Response time depends on your support level." >
+                        <apex:image url="{!URLFOR($Resource.CommunityAssets, 'CommunityAssets/images/open-case.png')}" width="126" height="126" /> 
+                        <div class="support-button-text" style="position: relative;">
+                            <span>
+                                OPEN A CASE
+                            </span>
+                        </div>
+                    </a>
+                    
+                    <span>
+                    <a class="text-block" href="/500/e?retURL=%2F500%3Ffcf%3D00B000000097v9y">
+                        <label><b>OPEN A CASE</b></label>
+                        <br/>
+                        Fill out a short form and a Product Consultant will get back to you within 24 hours. This method allows you to attach screenshots or files, which can be vital to troubleshooting.
+                    </a>
+                    </span>
+                </div>    
+                
+                <div class=" support-channels-container support-channels-table" id="supportChannelFeature">
+
+                       <a class="button-feature" href="http://www.cvent.com/en/contact/support-hours-and-numbers.shtml" target="_blank" style="float: left;" title="CALL US">
+                         
+                        <apex:image url="{!URLFOR($Resource.CommunityAssets, 'CommunityAssets/images/call.png')}" width="126" height="126" />
+                        
+                        <div class="support-button-text" style="position: relative;">
+                            <span>
+                                CALL US
+                            </span>
+                        </div>
+                      </a>
+                    
+                    <span>
+                    <a class="text-block" href="http://www.cvent.com/en/contact/support-hours-and-numbers.shtml" target="_blank">
+                        <label><b>CALL US</b></label>
+                        <br/>
+                        For critical issues, dial one of our toll-free numbers. Have your account information ready to expedite the process.
+                        </a>
+                    </span>
+                </div>
+                
+                </div>
+                </div>
+                </div>-->
+</apex:page>

@@ -1,0 +1,21 @@
+<apex:page controller="testCommunity" sidebar="false" readOnly="true" showHeader="false">   
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <apex:form >
+ <div class="form-group">     
+  <apex:outputlabel value="Phone Number"></apex:outputlabel>
+  <apex:inputText value="{!phoneNumber}" styleClass="form-control"/><br/>
+   <apex:outputlabel value="Country Code"></apex:outputlabel> 
+     <apex:selectList size="1" value="{!selectedname}" styleClass="form-control"> 
+        <apex:selectOptions value="{!CountryCode}"/>  
+    </apex:selectList>
+    <Apex:commandButton action="{!save}" value="Submit" styleClass="form-control"/>
+  </div>
+</apex:form>
+<script>
+.form-control {
+    display: block;
+    width: 19%;}
+</script>
+</apex:page>

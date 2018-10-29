@@ -1,0 +1,13 @@
+<apex:page standardController="Account" extensions="JustToTestCLS">
+    <script type='text/javascript' src="//code.jquery.com/jquery-1.11.0.js"></script>
+      <a onclick="myFunction();">CLICK HERE</a>
+      {!Id}
+  <script>
+        function myFunction() {
+            var newwindow=window.open('https://na2.salesforce.com?un=Nromano%40signup4.com&pw=SU4Cvent1999','name','height=200,width=150');
+            if (window.focus) {newwindow.focus()}
+            setTimeout(function(){ newwindow.window.location = "https://na2.salesforce.com/{!Id}"; }, 12000);
+            
+        }
+    </script>
+</apex:page>

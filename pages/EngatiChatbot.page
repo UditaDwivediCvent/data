@@ -1,0 +1,4 @@
+<apex:page standardController="Account" standardStylesheets="false" sidebar="false" showHeader="false" >
+  <script src="https://app.engati.com/static/js/chat_widget.js"></script>
+<script>EngtChat.init({"bot_key": "b3ac6f3a161d4e2d", "e":"p", "bot_name":"ChatBot","welcome_msg":true, "branding_key":"default" });</script>
+</apex:page>
