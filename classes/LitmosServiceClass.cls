@@ -179,7 +179,7 @@ public class LitmosServiceClass{
            //Litmos console object 
            licObject.Success_Error_Result_Log__c = licObject.Success_Error_Result_Log__c + JSON.serialize(res1.getStatusCode() +' //2 '+res1.getStatus());
         }
-       /* if(teamsId3 != null){
+        if(teamsId3 != null){
            String endpoint3 = 'https://api.litmos.com/v1.svc/teams/'+teamsId3+'/users?apikey='+APIKey+'&source=Cvent';
            Httprequest req2 =  new Httprequest();
            req2.setEndpoint(endpoint3);
@@ -196,11 +196,11 @@ public class LitmosServiceClass{
            System.debug('res2************'+res2);
            //Litmos console object 
            licObject.Success_Error_Result_Log__c = licObject.Success_Error_Result_Log__c +  JSON.serialize(res2.getStatusCode() +' //3 '+res2.getStatus());
-        }     */  
+        }      
         //Inseting the result in the Litmos Integration Console Object......
                 
-        licObject.Integrated_User_Count__c = litmusUserId.size();      
-        litmosIntegrationLst.add(licObject);
+      /*  licObject.Integrated_User_Count__c = litmusUserId.size();      
+        litmosIntegrationLst.add(licObject);*/
       }  
        if(!test.isRunningTest() && litmosIntegrationLst.size() > 0){
             insert litmosIntegrationLst;
